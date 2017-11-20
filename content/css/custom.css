@@ -1,0 +1,23 @@
+
+body{
+	height: 100vh;
+	width: 100vw;
+}
+.link {
+	stroke: #aaa;
+}
+
+.node text {
+	stroke:#333;
+	cursor:pointer;
+}
+
+.node circle{
+	stroke:#fff;
+	stroke-width:3px;
+	fill:#555;
+}
+
+.btn{
+	margin-right: 8px;
+}
