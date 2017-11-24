@@ -60,6 +60,15 @@ body{
     margin-left: 50px;
 }
 
+.sidenav .sideNavTitle {
+    text-decoration: none;
+    font-size: 30px;
+    color: #818181;
+    position: absolute;
+    top: 20px;
+    left: 25px;
+
+}
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
 #main {
     transition: margin-left .5s;
@@ -70,4 +79,8 @@ body{
 @media screen and (max-height: 450px) {
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
+}
+
+#main {
+    padding: 0px;
 }
