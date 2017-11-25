@@ -33,22 +33,47 @@ const initRadarChart = () => {
 	initLine(node)
 	.attr('x2', 0)
 	.attr('y2', -ARM_LENGTH);
-
+	
+	node.append("text")
+	.attr('x', 0)
+	.attr('y', -ARM_LENGTH)
+	.text("Distance");
+	
 	initLine(node)
 	.attr('x2', downXDist(ARM_LENGTH))
 	.attr('y2', downYDist(ARM_LENGTH));
+	
+	node.append("text")
+	.attr('x', downXDist(ARM_LENGTH))
+	.attr('y', downYDist(ARM_LENGTH))
+	.text("Diameter");
 
 	initLine(node)
 	.attr('x2', -downXDist(ARM_LENGTH))
 	.attr('y2', downYDist(ARM_LENGTH));
+	
+	node.append("text")
+	.attr('x', -downXDist(ARM_LENGTH))
+	.attr('y', downYDist(ARM_LENGTH))
+	.text("Velocity");
 
 	initLine(node)
 	.attr('x2', sideXDist(ARM_LENGTH))
 	.attr('y2', -sideYDist(ARM_LENGTH));
+	
+	node.append("text")
+	.attr('x', sideXDist(ARM_LENGTH))
+	.attr('y', -sideYDist(ARM_LENGTH))
+	.text("Impact Probability");
 
 	initLine(node)
 	.attr('x2', -sideXDist(ARM_LENGTH))
 	.attr('y2', -sideYDist(ARM_LENGTH));
+	
+	node.append("text")
+	.attr('x', -sideXDist(ARM_LENGTH))
+	.attr('y', -sideYDist(ARM_LENGTH))
+	.text("Hazard Scale");
 
 	OLDER_POLYGON = node.append("polygon")
 		.attr('id', 'radarChartPolygon1')
