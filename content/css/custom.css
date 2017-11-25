@@ -93,11 +93,11 @@ body{
     border-width: 1px;
     border-style: solid;
     border-radius: 6px;
-    margin-left: 60px;
+    margin-left: 25%;
     margin-right: 1px;
     margin-top: 1px;
     transition: all 0.2s ease-out;
-    padding-right: 100%;
+    width: 70%;
 }
 
 .nice-button:hover{
