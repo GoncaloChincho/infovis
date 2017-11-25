@@ -84,3 +84,23 @@ body{
 #main {
     padding: 0px;
 }
+
+.nice-button{
+    font-size: 20px;
+    color: gray;
+    border-color: gray;
+    background-color: #111;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 6px;
+    margin-left: 60px;
+    margin-right: 1px;
+    margin-top: 1px;
+    transition: all 0.2s ease-out;
+    padding-right: 100%;
+}
+
+.nice-button:hover{
+    border-color: #77dc77;
+    color: #77dc77;
+}
