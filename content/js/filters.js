@@ -9,3 +9,21 @@ function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
     document.getElementById("main").style.marginLeft = "0";
 }
+
+$(document).ready(function(){
+    $(".nice-button").click(function(){
+       item = $(this);
+       styleActiveClass = 'nice-button-active';
+       filter = item.text();
+       console.log(filter);
+       if(item.hasClass(styleActiveClass)){
+           item.removeClass(styleActiveClass);
+           //remove filter
+       }
+       else{
+           item.addClass(styleActiveClass);
+           //add filter
+       }
+       
+    });
+});
