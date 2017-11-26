@@ -4,6 +4,10 @@ const START_OFFSET = 50;
 let OLDER_POLYGON;
 let NEWER_POLYGON;
 
+let OLDER_NEO_NAME;
+let NEWER_NEO_NAME;
+let NEO_NAME;
+
 const initLine = (node) => node.append("line")
 	.attr('x1', 0)
 	.attr('y1', 0)
@@ -88,16 +92,26 @@ const initRadarChart = () => {
 	OLDER_POLYGON = node.append("polygon")
 		.attr('id', 'radarChartPolygon1')
 		.attr('fill', 'lime')
-		.attr('stroke', '#00a523')
+		.attr('stroke', 'grey')
 		.attr('fill-opacity', 0.3)
 		.attr('stroke-width', 1);
-
+		
 	NEWER_POLYGON = node.append("polygon")
 		.attr('id', 'radarChartPolygon2')
 		.attr('fill', 'orange')
-		.attr('stroke', '#db8300')
+		.attr('stroke', 'black')
 		.attr('fill-opacity', 0.3)
-		.attr('stroke-width', 1);		
+		.attr('stroke-width', 1);
+		
+	OLDER_NEO_NAME = node.append("text")
+		.attr('x',-250)
+		.attr('y', 180)
+		.attr('fill', 'grey');
+		
+	NEWER_NEO_NAME = node.append("text")
+		.attr('x',-250)
+		.attr('y', 200)
+		.attr('fill', 'black');
 	
 		compareNodeRadarChart(AVERAGE_NEO);
 }
@@ -118,20 +132,22 @@ const compareNodeRadarChart = (node) => {
 	OLDER_POLYGON.transition()
 		.duration(300)
 		.attr('points', `${first} ${fourth} ${second} ${third} ${fifth}`)
-		.attr("fill", getC(node.impactDamage))
-		.attr('stroke', getC(node.impactDamage));
+		.attr("fill", getC(node.impactDamage));
+	
+	NEWER_NEO_NAME.transition()
+		.text(node.name);
+
+	OLDER_NEO_NAME.transition()
+		.text(NEO_NAME);
+	NEO_NAME=node.name;
 	
 	const tmp = NEWER_POLYGON;
 	NEWER_POLYGON = OLDER_POLYGON;
 	OLDER_POLYGON = tmp;
 	
-	node.append("text")
-	.attr('x', -sideXDist(ARM_LENGTH)-50)
-	.attr('y', -sideYDist(ARM_LENGTH)+10)
-	.text("coco");
 }
 
 const compareWithAverageRadarChart = (node) => {
+	compareNodeRadarChart(node);
 	compareNodeRadarChart(AVERAGE_NEO);
-	compareNodeRadarChart(node);	
 }
