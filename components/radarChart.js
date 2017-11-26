@@ -4,6 +4,9 @@ const START_OFFSET = 50;
 let OLDER_POLYGON;
 let NEWER_POLYGON;
 
+let POINTS;
+let COLOR;
+
 let OLDER_NEO_NAME;
 let NEWER_NEO_NAME;
 let NEO_NAME;
@@ -26,7 +29,7 @@ const initRadarChart = () => {
 
 	var node = svg.append("g")
 		.attr('id','radarChart')
-		.attr('transform', 'translate(700, 250)')
+		.attr('transform', 'translate(750, 250)')
 
 	node.append("circle")
 	.attr('r', 3)
@@ -104,12 +107,12 @@ const initRadarChart = () => {
 		.attr('stroke-width', 1);
 		
 	OLDER_NEO_NAME = node.append("text")
-		.attr('x',-250)
+		.attr('x',150)
 		.attr('y', 180)
 		.attr('fill', 'grey');
 		
 	NEWER_NEO_NAME = node.append("text")
-		.attr('x',-250)
+		.attr('x',150)
 		.attr('y', 200)
 		.attr('fill', 'black');
 	
@@ -129,10 +132,17 @@ const compareNodeRadarChart = (node) => {
 	const fifthVal = getScalePosition(HAZARD_SCALE_MAX, HAZARD_SCALE_MIN, node.hazardScale);	
 	const fifth = `${-sideXDist(fifthVal)}, ${-sideYDist(fifthVal)}`;
 
-	OLDER_POLYGON.transition()
+	NEWER_POLYGON.transition()
 		.duration(300)
 		.attr('points', `${first} ${fourth} ${second} ${third} ${fifth}`)
 		.attr("fill", getC(node.impactDamage));
+	
+	OLDER_POLYGON.transition()
+		.duration(300)
+		.attr('points', POINTS)
+		.attr("fill", COLOR);
+	POINTS = `${first} ${fourth} ${second} ${third} ${fifth}`;
+	COLOR = getC(node.impactDamage);
 	
 	NEWER_NEO_NAME.transition()
 		.text(node.name);
@@ -141,9 +151,7 @@ const compareNodeRadarChart = (node) => {
 		.text(NEO_NAME);
 	NEO_NAME=node.name;
 	
-	const tmp = NEWER_POLYGON;
-	NEWER_POLYGON = OLDER_POLYGON;
-	OLDER_POLYGON = tmp;
+
 	
 }
 
