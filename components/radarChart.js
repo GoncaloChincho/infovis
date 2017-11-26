@@ -22,7 +22,7 @@ const initRadarChart = () => {
 
 	var node = svg.append("g")
 		.attr('id','radarChart')
-		.attr('transform', 'translate(800, 250)')
+		.attr('transform', 'translate(700, 250)')
 
 	node.append("circle")
 	.attr('r', 3)
@@ -35,8 +35,8 @@ const initRadarChart = () => {
 	.attr('y2', -ARM_LENGTH);
 
     node.append("text")
-	.attr('x', 0)
-	.attr('y', -ARM_LENGTH)
+	.attr('x', -27)
+	.attr('y', -ARM_LENGTH-10)
 	.text("Distance");
 
 	initLine(node)
@@ -44,8 +44,8 @@ const initRadarChart = () => {
 	.attr('y2', downYDist(ARM_LENGTH));
 	
 	node.append("text")
-	.attr('x', downXDist(ARM_LENGTH))
-	.attr('y', downYDist(ARM_LENGTH))
+	.attr('x', downXDist(ARM_LENGTH)-25)
+	.attr('y', downYDist(ARM_LENGTH)+20)
 	.text("Diameter");
 
 	initLine(node)
@@ -53,8 +53,8 @@ const initRadarChart = () => {
 	.attr('y2', downYDist(ARM_LENGTH));
 	
 	node.append("text")
-	.attr('x', -downXDist(ARM_LENGTH))
-	.attr('y', downYDist(ARM_LENGTH))
+	.attr('x', -downXDist(ARM_LENGTH)-25)
+	.attr('y', downYDist(ARM_LENGTH)+20)
 	.text("Velocity");
 
 	initLine(node)
@@ -62,18 +62,28 @@ const initRadarChart = () => {
 	.attr('y2', -sideYDist(ARM_LENGTH));
 	
 	node.append("text")
-	.attr('x', sideXDist(ARM_LENGTH))
-	.attr('y', -sideYDist(ARM_LENGTH))
-	.text("Impact Probability");
+	.attr('x', sideXDist(ARM_LENGTH)+20)
+	.attr('y', -sideYDist(ARM_LENGTH)-5)
+	.text("Impact");
 
+	node.append("text")
+	.attr('x', sideXDist(ARM_LENGTH)+10)
+	.attr('y', -sideYDist(ARM_LENGTH)+10)
+	.text("Probability");
+	
 	initLine(node)
 	.attr('x2', -sideXDist(ARM_LENGTH))
 	.attr('y2', -sideYDist(ARM_LENGTH));
 	
 	node.append("text")
-	.attr('x', -sideXDist(ARM_LENGTH))
-	.attr('y', -sideYDist(ARM_LENGTH))
-	.text("Hazard Scale");
+	.attr('x', -sideXDist(ARM_LENGTH)-55)
+	.attr('y', -sideYDist(ARM_LENGTH)-5)
+	.text("Hazard");
+	
+	node.append("text")
+	.attr('x', -sideXDist(ARM_LENGTH)-50)
+	.attr('y', -sideYDist(ARM_LENGTH)+10)
+	.text("Scale");
 
 	OLDER_POLYGON = node.append("polygon")
 		.attr('id', 'radarChartPolygon1')
@@ -107,11 +117,18 @@ const compareNodeRadarChart = (node) => {
 
 	OLDER_POLYGON.transition()
 		.duration(300)
-		.attr('points', `${first} ${fourth} ${second} ${third} ${fifth}`);
+		.attr('points', `${first} ${fourth} ${second} ${third} ${fifth}`)
+		.attr("fill", getC(node.impactDamage))
+		.attr('stroke', getC(node.impactDamage));
 	
 	const tmp = NEWER_POLYGON;
 	NEWER_POLYGON = OLDER_POLYGON;
 	OLDER_POLYGON = tmp;
+	
+	node.append("text")
+	.attr('x', -sideXDist(ARM_LENGTH)-50)
+	.attr('y', -sideYDist(ARM_LENGTH)+10)
+	.text("coco");
 }
 
 const compareWithAverageRadarChart = (node) => {
