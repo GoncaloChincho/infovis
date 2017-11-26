@@ -1,0 +1,167 @@
+[
+  {
+    "objectId": "(2016 DY30)2016-02-25T18:59:00.000Z",
+    "date": "2016-02-25T18:59:00.000Z",
+    "distance": 0.04,
+    "velocity": 17.3,
+    "diameter": 3.4,
+    "impactProbability": 7.7e-7,
+    "hazardScale": -8.3,
+    "impactDamage": 0,
+    "name": "(2016 DY30)"
+  },
+  {
+    "objectId": "(2009 VA)2009-11-06T20:32:00.000Z",
+    "date": "2009-11-06T20:32:00.000Z",
+    "distance": 0.05,
+    "velocity": 10.3,
+    "diameter": 8.05,
+    "impactProbability": 0.000022,
+    "hazardScale": -5.8,
+    "impactDamage": 0,
+    "name": "(2009 VA)"
+  },
+  {
+    "objectId": "(2014 LY21)2014-06-03T15:38:00.000Z",
+    "date": "2014-06-03T15:38:00.000Z",
+    "distance": 0.05,
+    "velocity": 13.3,
+    "diameter": 6.5,
+    "impactProbability": 0.000091,
+    "hazardScale": -5.7,
+    "impactDamage": 0,
+    "name": "(2014 LY21)"
+  },
+  {
+    "objectId": "(2017 EA)2017-03-02T13:05:00.000Z",
+    "date": "2017-03-02T13:05:00.000Z",
+    "distance": 0.05,
+    "velocity": 18.4,
+    "diameter": 2.95,
+    "impactProbability": 0.000039,
+    "hazardScale": -6.8,
+    "impactDamage": 0,
+    "name": "(2017 EA)"
+  },
+  {
+    "objectId": "(2010 RF12)2095-09-05T22:03:00.000Z",
+    "date": "2095-09-05T22:03:00.000Z",
+    "distance": 0.06,
+    "velocity": 7.7,
+    "diameter": 10.2,
+    "impactProbability": 0.05,
+    "hazardScale": -3.3,
+    "impactDamage": 0,
+    "name": "(2010 RF12)"
+  },
+  {
+    "objectId": "(2013 YB)2013-12-23T11:51:00.000Z",
+    "date": "2013-12-23T11:51:00.000Z",
+    "distance": 0.07,
+    "velocity": 10.5,
+    "diameter": 2.15,
+    "impactProbability": 0.000081,
+    "hazardScale": -6.6,
+    "impactDamage": 0,
+    "name": "(2013 YB)"
+  },
+  {
+    "objectId": "(2015 SK7)2015-09-22T19:44:00.000Z",
+    "date": "2015-09-22T19:44:00.000Z",
+    "distance": 0.07,
+    "velocity": 13.7,
+    "diameter": 7.15,
+    "impactProbability": 9.2e-7,
+    "hazardScale": -8.3,
+    "impactDamage": 0,
+    "name": "(2015 SK7)"
+  },
+  {
+    "objectId": "(2008 US)2008-10-20T21:30:00.000Z",
+    "date": "2008-10-20T21:30:00.000Z",
+    "distance": 0.09,
+    "velocity": 19.1,
+    "diameter": 2.25,
+    "impactProbability": 0.000016,
+    "hazardScale": -6.3,
+    "impactDamage": 0,
+    "name": "(2008 US)"
+  },
+  {
+    "objectId": "(2011 CF22)2011-02-06T10:40:00.000Z",
+    "date": "2011-02-06T10:40:00.000Z",
+    "distance": 0.1,
+    "velocity": 19.6,
+    "diameter": 2.9,
+    "impactProbability": 0.000051,
+    "hazardScale": -7.7,
+    "impactDamage": 0,
+    "name": "(2011 CF22)"
+  },
+  {
+    "objectId": "99942 Apophis (2004 M2029-04-13T19:46:00.000Z",
+    "date": "2029-04-13T19:46:00.000Z",
+    "distance": 0.1,
+    "velocity": 7.4,
+    "diameter": 495,
+    "impactProbability": 0.0000089,
+    "hazardScale": -2.9,
+    "impactDamage": 1,
+    "name": "99942 Apophis (2004 M"
+  },
+  {
+    "objectId": "(2008 VM)2008-11-03T21:31:00.000Z",
+    "date": "2008-11-03T21:31:00.000Z",
+    "distance": 0.12,
+    "velocity": 11,
+    "diameter": 3.9,
+    "impactProbability": 0.000036,
+    "hazardScale": -6.5,
+    "impactDamage": 0,
+    "name": "(2008 VM)"
+  },
+  {
+    "objectId": "(2004 FH)2004-03-18T21:09:00.000Z",
+    "date": "2004-03-18T21:09:00.000Z",
+    "distance": 0.13,
+    "velocity": 8,
+    "diameter": 31,
+    "impactProbability": 0.0000054,
+    "hazardScale": -6.6,
+    "impactDamage": 0,
+    "name": "(2004 FH)"
+  },
+  {
+    "objectId": "(2012 TC4)2017-10-12T03:42:00.000Z",
+    "date": "2017-10-12T03:42:00.000Z",
+    "distance": 0.13,
+    "velocity": 7.7,
+    "diameter": 19.5,
+    "impactProbability": 0.001,
+    "hazardScale": -4.2,
+    "impactDamage": 0,
+    "name": "(2012 TC4)"
+  },
+  {
+    "objectId": "(2010 XB)2010-11-30T17:08:00.000Z",
+    "date": "2010-11-30T17:08:00.000Z",
+    "distance": 0.14,
+    "velocity": 20.1,
+    "diameter": 5.15,
+    "impactProbability": 2.5e-7,
+    "hazardScale": -8.2,
+    "impactDamage": 0,
+    "name": "(2010 XB)"
+  },
+  {
+    "objectId": "(2017 JB2)2017-05-04T01:18:00.000Z",
+    "date": "2017-05-04T01:18:00.000Z",
+    "distance": 0.14,
+    "velocity": 4.8,
+    "diameter": 6.6,
+    "impactProbability": 9.7e-7,
+    "hazardScale": -8.8,
+    "impactDamage": 0,
+    "name": "(2017 JB2)"
+  }
+]

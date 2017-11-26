@@ -32,7 +32,7 @@ var initOrbitalLayout = () => {
 	var links = DATA.map(o => { return {source: 'Earth', target: o.objectId, distance: o.distance}});
 	var nodes = [{objectId: 'Earth', fx: 0, fy: 0}, ...DATA];
 	var node = svg.append("g")
-		.attr('transform', 'translate(250, 250)')
+		.attr('transform', 'translate(400, 390)')
 		.attr("class", "nodes")
 		.selectAll("circle")
 		.data(nodes)
