@@ -119,6 +119,6 @@ function loadCharts(data,update=false){
     }
     initOrbitalLayout();
     initRadarChart();
- });
+    });
 }
  
