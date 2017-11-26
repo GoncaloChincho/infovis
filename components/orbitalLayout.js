@@ -19,21 +19,19 @@ const getC = (impactDamage) => {
 	else return "blue";
 }
 
-
-	
-const initOrbitalLayout = () => {
-    var simulation = d3.forceSimulation()
+var simulation = d3.forceSimulation()
 	.force("link", d3.forceLink().id((d) => d.objectId).distance((d) => getBaseLog(1.0001, d.distance + 10) / 165 - 130))
 	.force("collide", d3.forceCollide().radius((d) => getR(d.diameter)))
 	.force("charge", d3.forceManyBody().strength(-30))
 	.alphaDecay(0.05);
 	// .force("center", d3.forceCenter());
 	// .force("r", d3.forceRadial().strength(0.01));
-    
+	
+const initOrbitalLayout = () => {
 	const links = DATA.map(o => { return {source: 'Earth', target: o.objectId, distance: o.distance}});
 	const nodes = [{objectId: 'Earth', fx: 0, fy: 0}, ...DATA];
 	var node = svg.append("g")
-		.attr('transform', 'translate(400, 390)')
+		.attr('transform', 'translate(250, 250)')
 		.attr("class", "nodes")
 		.selectAll("circle")
 		.data(nodes)

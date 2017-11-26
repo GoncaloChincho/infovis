@@ -29,7 +29,7 @@ const initRadarChart = () => {
 
 	var node = svg.append("g")
 		.attr('id','radarChart')
-		.attr('transform', 'translate(1100, 220)')
+		.attr('transform', 'translate(750, 250)')
 
 	node.append("circle")
 	.attr('r', 3)
