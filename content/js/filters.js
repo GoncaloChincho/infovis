@@ -93,7 +93,7 @@ function loadCharts(data,update=false){
     if(update){
         svg.selectAll("*").remove();
     }
-    d3.json(data, function(error, graph) {
+    d3.json("content/data/example.json", function(error, graph) {
     if (error) throw error;
     DATA = graph;
     let distanceSum = 0;
