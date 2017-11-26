@@ -1,3 +1,4 @@
+
 var getC = (impactDamage) => {
         if(impactDamage === 0) return "green";
         if(impactDamage === 1) return "yellow";
@@ -20,7 +21,6 @@ var initOrbitalLayout = () => {
         else return 15;
     }
 
-    
     var simulation = d3.forceSimulation()
 	.force("link", d3.forceLink().id((d) => d.objectId).distance((d) => getBaseLog(1.0001, d.distance + 10) / 165 - 130))
 	.force("collide", d3.forceCollide().radius((d) => getR(d.diameter)))
