@@ -10,7 +10,7 @@ const HAZARD_SCALE_MAX = -1.4;
 const HAZARD_SCALE_MIN = -11.4;
 let AVERAGE_NEO = null;
 let DATA = null;
-activeFilters = ['dist-top15'];
+activeFilters = ['dmg-1','dmg-2'];
 styleActiveClass = 'nice-button-active';
 const svg = d3.select("#svgId");
 
