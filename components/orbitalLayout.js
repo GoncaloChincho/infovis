@@ -1,7 +1,7 @@
-const getBaseLog = (x, y) => {
+var getBaseLog = (x, y) => {
 	  return Math.log(y) / Math.log(x);
 }
-const getR = (diameter) => {
+var getR = (diameter) => {
 	if(diameter < 50) return 3;
 	if(diameter < 150) return 6;
 	if(diameter < 250) return 9;
@@ -11,7 +11,7 @@ const getR = (diameter) => {
 	else return 15;
 }
 
-const getC = (impactDamage) => {
+var getC = (impactDamage) => {
 	if(impactDamage === 0) return "green";
 	if(impactDamage === 1) return "yellow";
 	if(impactDamage === 2) return "orange";
