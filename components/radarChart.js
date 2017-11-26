@@ -33,6 +33,10 @@ const initRadarChart = () => {
 	initLine(node)
 	.attr('x2', 0)
 	.attr('y2', -ARM_LENGTH);
+    node.append("text")
+	.attr('x', 0)
+	.attr('y', -ARM_LENGTH)
+	.text("Distance");
 
 	initLine(node)
 	.attr('x2', downXDist(ARM_LENGTH))
