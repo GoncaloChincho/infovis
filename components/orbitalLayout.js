@@ -27,9 +27,9 @@ var simulation = d3.forceSimulation()
 	// .force("center", d3.forceCenter());
 	// .force("r", d3.forceRadial().strength(0.01));
 	
-var initOrbitalLayout = () => {
-	var links = DATA.map(o => { return {source: 'Earth', target: o.objectId, distance: o.distance}});
-	var nodes = [{objectId: 'Earth', fx: 0, fy: 0}, ...DATA];
+const initOrbitalLayout = () => {
+	const links = DATA.map(o => { return {source: 'Earth', target: o.objectId, distance: o.distance}});
+	const nodes = [{objectId: 'Earth', fx: 0, fy: 0}, ...DATA];
 	var node = svg.append("g")
 		.attr('transform', 'translate(250, 250)')
 		.attr("class", "nodes")
