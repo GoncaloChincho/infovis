@@ -66,7 +66,7 @@ function fileFromFilters(){
 
 $(document).ready(function(){
     activateFilterBtns();
-    loadCharts("content/data/dmg/dmg-1.json");
+    loadCharts(fileFromFilters());
     $(".nice-button").click(function(){
        var item = $(this);
        var filter = item.val();
