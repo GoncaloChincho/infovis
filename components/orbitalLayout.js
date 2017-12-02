@@ -18,8 +18,6 @@ const getC = (impactDamage) => {
 	if(impactDamage === 3) return "red";
 	else return "blue";
 }
-
-
 	
 const initOrbitalLayout = () => {
     var simulation = d3.forceSimulation()
@@ -39,10 +37,17 @@ const initOrbitalLayout = () => {
 		.data(nodes)
 		.enter().append("circle")
 			.attr("r", (d) => getR(d.diameter))
-			.attr("fill", (d) => getC(d.impactDamage))
-
+			.attr("fill", "grey"/*(d) => getC(d.impactDamage)*/)
+			.attr('stroke-width', 1);
+	
+	var older=null;
+	var olderolder=null;
+	
 	node.on(
-		'click', (d) => compareNodeRadarChart(d)
+		'click', function(d){
+			compareNodeRadarChart(d), 
+			highlight(d3.select(this));}
+			
 	);
 
 	node.on(
@@ -64,4 +69,22 @@ const initOrbitalLayout = () => {
 			.attr("cx", function(d) { return d.x; })
 			.attr("cy", function(d) { return d.y; });
 		}
+	function highlight(newer){
+		newer
+			.attr("fill", (d) => getC(d.impactDamage))
+			.attr('stroke', 'black');
+		if(older != null){	
+			older
+				.attr("fill",(d) => getC(d.impactDamage))
+				.attr('stroke', '#d3d3d3');
+		}
+		
+		if(olderolder != null){	
+			olderolder
+				.attr("fill","grey");
+		}
+		olderolder=older;
+		older = newer;
+	
+	}
 };	
