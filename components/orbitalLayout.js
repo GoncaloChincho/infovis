@@ -37,7 +37,8 @@ const initOrbitalLayout = () => {
 		.data(nodes)
 		.enter().append("circle")
 			.attr("r", (d) => getR(d.diameter))
-			.attr("fill", "grey"/*(d) => getC(d.impactDamage)*/)
+			.attr("fill", function(d){
+			if(d.objectId=='Earth'){return "blue"}else{return "grey"}}/*(d) => getC(d.impactDamage)*/)
 			.attr('stroke-width', 1);
 	
 	var older=null;
@@ -45,8 +46,9 @@ const initOrbitalLayout = () => {
 	
 	node.on(
 		'click', function(d){
-			compareNodeRadarChart(d), 
-			highlight(d3.select(this));}
+			if(d.objectId != 'Earth'){
+				compareNodeRadarChart(d), 
+			highlight(d3.select(this));}}
 			
 	);
 
