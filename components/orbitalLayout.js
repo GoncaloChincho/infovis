@@ -70,19 +70,22 @@ const initOrbitalLayout = () => {
 			.attr("cy", function(d) { return d.y; });
 		}
 	function highlight(newer){
-		newer
-			.attr("fill", (d) => getC(d.impactDamage))
-			.attr('stroke', 'black');
+		if(olderolder != null){	
+			olderolder
+				.attr("fill","grey");
+		}
+		
 		if(older != null){	
 			older
 				.attr("fill",(d) => getC(d.impactDamage))
 				.attr('stroke', '#d3d3d3');
 		}
 		
-		if(olderolder != null){	
-			olderolder
-				.attr("fill","grey");
-		}
+		newer
+			.attr("fill", (d) => getC(d.impactDamage))
+			.attr('stroke', 'black');
+		
+		
 		olderolder=older;
 		older = newer;
 	
