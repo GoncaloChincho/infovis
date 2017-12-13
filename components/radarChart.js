@@ -1,5 +1,5 @@
-const ARM_LENGTH = 150;
-const START_OFFSET = 50;
+const ARM_LENGTH = 120;
+const START_OFFSET = 30;
 
 let OLDER_POLYGON;
 let NEWER_POLYGON;
@@ -10,6 +10,27 @@ let COLOR;
 let OLDER_NEO_NAME;
 let NEWER_NEO_NAME;
 let NEO_NAME;
+
+let AVERAGE_NEO;
+
+const DISTANCE_MAX = 77.82;
+const DISTANCE_MIN = 0.04;
+const DIAMETER_MAX = 495;
+const DIAMETER_MIN = 1.65;
+const VELOCITY_MAX = 38.6;
+const VELOCITY_MIN = 1;
+const IMPACT_PROBABILITY_MAX = 0.96;
+const IMPACT_PROBABILITY_MIN = 1.2e-9;
+const HAZARD_SCALE_MAX = -1.4;
+const HAZARD_SCALE_MIN = -11.4;
+
+const getC = (impactDamage) => {
+	if(impactDamage === 0) return "green";
+	if(impactDamage === 1) return "yellow";
+	if(impactDamage === 2) return "orange";
+	if(impactDamage === 3) return "red";
+	else return "blue";
+}
 
 const initLine = (node) => node.append("line")
 	.attr('x1', 0)
@@ -27,9 +48,12 @@ const getScalePosition = (max, min, value) => {
 
 const initRadarChart = () => {
 
-	var node = svg.append("g")
-		.attr('id','radarChart')
-		.attr('transform', 'translate(750, 250)')
+	const height = 0.5 * window.innerHeight + 20;
+	const width = 0.3 * window.innerWidth - 20;
+
+
+	var node = d3.select("#svgRadar").append("g")
+		 .attr('transform', `translate(${(width/2)}, ${height/2})`)
 
 	node.append("circle")
 	.attr('r', 3)
@@ -150,9 +174,6 @@ const compareNodeRadarChart = (node) => {
 	OLDER_NEO_NAME.transition()
 		.text(NEO_NAME);
 	NEO_NAME=node.name;
-	
-
-	
 }
 
 const compareWithAverageRadarChart = (node) => {
@@ -160,3 +181,30 @@ const compareWithAverageRadarChart = (node) => {
 	compareNodeRadarChart(AVERAGE_NEO);
 	compareNodeRadarChart(node);}
 }
+
+
+d3.json("content/data/example.json", function(error, data) {
+	if (error) throw error;
+	let distanceSum = 0;
+	let diameterSum = 0;
+	let velocitySum = 0;
+	let impactProbabilitySum = 0;
+	let hazardScaleSum = 0;
+
+	for( var i = 0; i < data.length; i++ ){
+		distanceSum += data[i].distance;
+		diameterSum += data[i].diameter;
+		velocitySum += data[i].velocity;
+		impactProbabilitySum += data[i].impactProbability;
+		hazardScaleSum += data[i].hazardScale;
+	}
+	AVERAGE_NEO = {
+		name: 'Average NEO',
+		distance: distanceSum/data.length,
+		diameter: diameterSum/data.length,
+		velocity: velocitySum/data.length,
+		impactProbability: impactProbabilitySum/data.length,
+		hazardScale: hazardScaleSum/data.length,
+	}
+	initRadarChart();
+});
