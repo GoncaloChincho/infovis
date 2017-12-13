@@ -95,3 +95,15 @@ circle.earth {
   stroke-width: 1px;
   display: none;
 }
+
+.voronoi {
+  fill: transparent;
+  stroke-width: 1px;
+  stroke: none;
+}
+
+.asteroid {
+  fill: #CCC;
+  stroke: #CCC;
+  stroke-width: 1px;
+}

@@ -187,7 +187,7 @@
             //console.log(d.closeApproachYear);
             //console.log(time_scale(d.closeApproachYear));
             return time_scale(d.closeApproachYear);
-          })
+          });
           /*.attr("transform", function(d) {
             if ( Math.random() * 2 > 1)
             return "rotate(34, " + [time_scale(d.closeApproach._d), lunar_distance_scale(d.ldMinimum * LUNAR_DISTANCE)].join(",") + ")";
@@ -244,38 +244,28 @@
           .x(function(d) {return time_scale(d.closeApproachYear) })
           .y(function(d) { return lunar_distance_scale(d.ld * LUNAR_DISTANCE) })
           .extent([[-1, -1], [width+1, height+1]]);
-
-
-        var voronoiGroup = ow.append("g")
-          .attr("class", "voronoi");
-        var voronoidata = voronoi(data);
-        /*console.log(voronoidata['cells']);
-        voronoiGroup.selectAll("path")
-            .data(voronoidata['cells'])
-            .enter()
-            .append("path")
-            .attr("d", function(d) {
-                console.log(d);
-                if ( !d || d.length < 2) {
-                 return null;
-                }
-                return "M" + d['site'].join("L") + "Z";
-            })
-            .datum(function(d) {
-              return d && d.point;
-             })
-            .on("mouseenter", function(d) {
-              d.ringEl.style.display = 'block';
-            })
-            .on("mouseout", function(d) {
-              d.ringEl.style.display = 'none';
-            });*/
-
+        var polygon = ow.append("g")
+                        .attr("class", "voronoi")
+                        .selectAll("path")
+                        .data(voronoi.polygons(data))
+                        .enter().append("path")
+                        .call(redrawPolygon)
+                        .on("mouseenter", function(d) {
+                            d.data['ringEl'].style.display = 'block';
+                        })
+                        .on("mouseout", function(d) {
+                          d.data['ringEl'].style.display = 'none';
+                        });
   }
     
   function inInterval(number,interval){
       return number >= interval[0] && number <= interval[1];
   }
+    
+    function redrawPolygon(polygon) {
+        polygon
+            .attr("d", function(d) { return d ? "M" + d.join("L") + "Z" : null; });
+}
     
     
     draw();
