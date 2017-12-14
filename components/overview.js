@@ -134,7 +134,8 @@
                     month: month,
                     name: d["Object"],
                     diam: d["Diameter"],
-                    origYear: parseInt(d['Year'])
+                    origYear: parseInt(d['Year']),
+                    iDamage: d['Danger']
                 }
             })
             .get(function(errors, rows) {
@@ -147,9 +148,12 @@
                     .enter()
                     .append("circle")
                     .attr("class", function(d) {
-                        d.el = this;
-                        var className = '';
-                        return className += " asteroid";
+                    var className = "asteroid"
+                        if(d.iDamage != 0){
+                            className += " danger-" + parseInt(d.iDamage);
+                        }
+                        //console.log(className);
+                        return className;
                     })
                     .attr("r", function(d) {
                         return size_scale(getR(d.diam));
@@ -171,7 +175,7 @@
                         var className = 'asteroid-rings';
                         return className;
                     })
-                    .attr("r", 30)
+                    .attr("r", 20)
                     .attr("cx", function(d) {
                         return time_scale(d.closeApproachYear + d.month)
                     })
@@ -205,24 +209,24 @@
             .call(redrawPolygon)
             .on("mouseenter", function(d) {
                 d.data['ringEl'].style.display = 'block';
-                console.log(d);
+                //console.log(d);
                 popover.select("#name").text('Asteroid ' + d['data'].name);
                 popover.select("#approach").text('Approach Date: ' + nameFromMonthNumber(d['data'].month) + '-' + d['data'].origYear);
                 var popEl = popover["_groups"][0][0];
-                console.log(d['data'].el.getBBox());
+                console.log(d['data']);
                 
-                if (d['data'].el.cy.baseVal.value > height / 2 ) {
-                    popEl.style.top = d['data'].el.getBBox().y - 65 + 'px';
+                if (d.data['ringEl'].cy.baseVal.value > height / 2 ) {
+                    popEl.style.top = d.data['ringEl'].getBBox().y - 65 + 'px';
                 }
                 else{
-                    popEl.style.top = d['data'].el.getBBox().y + 32 + 'px';
+                    popEl.style.top = d.data['ringEl'].getBBox().y + 32 + 'px';
                 }
 
-                if (d['data'].el.cx.baseVal.value > width / 2 ) {
-                    popEl.style.left = d['data'].el.getBBox().x - 140 + 'px';
+                if (d.data['ringEl'].cx.baseVal.value > width / 2 ) {
+                    popEl.style.left = d.data['ringEl'].getBBox().x - 140 + 'px';
                 }
                 else {
-                    popEl.style.left = d['data'].el.getBBox().x + 20 + 'px';
+                    popEl.style.left = d.data['ringEl'].getBBox().x + 20 + 'px';
                 }
                 popEl.style.display = 'block';
             })
@@ -242,15 +246,16 @@
                 return d ? "M" + d.join("L") + "Z" : null;
             });
     }
+    
     const getR = (diameter) => {
-        if (diameter < 50) return 3;
-        if (diameter < 150) return 6;
-        if (diameter < 250) return 9;
-        if (diameter < 350) return 10;
-        if (diameter < 450) return 11;
-        if (diameter < 550) return 12;
-        if (diameter < 1000) return 15;
-        else return 15;
+        if (diameter < 50) return 4;
+        if (diameter < 150) return 7;
+        if (diameter < 250) return 10;
+        if (diameter < 350) return 11;
+        if (diameter < 450) return 12;
+        if (diameter < 550) return 13;
+        if (diameter < 1000) return 16;
+        else return 18;
     }
     function getMonthFromString(mon){
         return new Date(Date.parse(mon +" 1, 2012")).getMonth()+1
