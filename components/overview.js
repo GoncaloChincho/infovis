@@ -5,6 +5,7 @@
     var offsetTop, offsetBottom;
     var minYear, maxYear, yearWindowSize;
 
+   
     function draw() {
         ow = d3.select("#svgOverview");
         var window_height = window.innerHeight;
@@ -17,6 +18,7 @@
         offsetTop = 40;
         offsetBottom = 40;
         windowSize = 5;
+        shift = 
             
         lunar_distance_scale = d3.scaleLinear()
             .domain([0, MAX_LDS * LUNAR_DISTANCE])
@@ -30,7 +32,7 @@
         time_year_scale = d3.scaleLinear()
             .domain([minYear, maxYear])
             .range([0, width]);
-        console.log(maxYear*12 + 12);
+        //console.log(maxYear*12 + 12);
         time_scale = d3.scaleLinear()
             .domain([minYear+1, minYear + (maxYear - minYear)*12 + 12])
             .range([0, width]);
@@ -39,19 +41,28 @@
             .domain([3, 15])
             .range([1, 4]);
 
-        drawGuideLines("guide-light", windowSize * (1 / 3));
-        drawGuideLines("guide-light", (2 / 3) * windowSize);
+        //drawGuideLines("guide-light", 2);
+        //drawGuideLines("guide-light", 1);
         drawRulers();
         drawEarthAndMoon();
         drawNeos();
     }
+    
+     function yearToYearmonth(year){
+        console.log('a');
+        console.log(minYear);
+        return minYear + ((year) - minYear) * 12;
+    }
+    
 
     function drawGuideLines(classname, years) {
         var date = new Date();
         var year = date.getFullYear();
         var guides = ow.append("g");
+        var left = minYear + ((year - years + 1) - minYear) * 12;
+        var right = minYear + ((year + years) - minYear) * 12;
         guides.selectAll("guide")
-            .data([time_year_scale(year - 1 * years), time_year_scale(year + years)])
+            .data([time_scale(left), time_scale(right)])
             .enter()
             .append("line")
             .attr("x1", function(d) {
@@ -126,7 +137,7 @@
                 var year = minYear + (parseInt(d['Year']) - minYear) * 12;
                 
                 var month = getMonthFromString(d['Month']);
-                if (d["Object"] === "" || !inInterval(year, [minYear+1, maxYear*12 + 12])) return;
+                if (d["Object"] === "" || !inInterval(year, [minYear, maxYear*12 + 12])) return;
                 
                 return {
                     ld: d["Distance (LD)"],
@@ -135,7 +146,11 @@
                     name: d["Object"],
                     diam: d["Diameter"],
                     origYear: parseInt(d['Year']),
-                    iDamage: d['Danger']
+                    iDamage: d['Danger'],
+                    impactProb: d['Impact Probability'],
+                    hazard: d['Hazard Scale'],
+                    velocity: d['Velocity (km/s)'],
+                    selected: false
                 }
             })
             .get(function(errors, rows) {
@@ -148,7 +163,8 @@
                     .enter()
                     .append("circle")
                     .attr("class", function(d) {
-                    var className = "asteroid"
+                        d.circleEl = this;
+                        var className = "asteroid"
                         if(d.iDamage != 0){
                             className += " danger-" + parseInt(d.iDamage);
                         }
@@ -213,7 +229,7 @@
                 popover.select("#name").text('Asteroid ' + d['data'].name);
                 popover.select("#approach").text('Approach Date: ' + nameFromMonthNumber(d['data'].month) + '-' + d['data'].origYear);
                 var popEl = popover["_groups"][0][0];
-                console.log(d['data']);
+                //console.log(d['data']);
                 
                 if (d.data['ringEl'].cy.baseVal.value > height / 2 ) {
                     popEl.style.top = d.data['ringEl'].getBBox().y - 65 + 'px';
@@ -233,8 +249,50 @@
             .on("mouseout", function(d) {
                 d.data['ringEl'].style.display = 'none';
                 popover["_groups"][0][0].style.display = 'none'
+            })
+            .on("mousedown", function(d){
+                d['data'].selected = !d['data'].selected;
+                if (d['data'].selected) {
+                    //var selected_circles = d3.select(d['data']);
+                    pulsate(d3.select(d['data']));
+
+                  }
+                
             });
     }
+    
+    function pulsate(selection) {
+    recursive_transitions();
+        
+        function recursive_transitions() {
+            console.log(selection);
+            circle = selection['_groups'][0][0].circleEl;
+            //console.log(circle);
+            selectionCircle = d3.select(circle);
+          if (selection['_groups'][0][0].selected) {
+            selectionCircle.transition()
+                .duration(400)
+                .attr("stroke-width", 2)
+                .attr("r", 8)
+                .ease(d3.easeSin)
+                .transition()
+                .duration(500)
+                .attr('stroke-width', 3)
+                .attr("r", 6)
+                .ease(d3.easeSin)
+                .on("end", recursive_transitions);
+          } else {
+            // transition back to normal
+              console.log(getR(selection['_groups'][0][0].diam));
+            selectionCircle.transition()
+                .duration(200)
+                .attr("r", size_scale(getR(selection['_groups'][0][0].diam)))
+                .attr("stroke-width", 2)
+                .attr("stroke-dasharray", "1, 0");
+          }
+        }
+    }
+    
 
     function inInterval(number, interval) {
         return number >= interval[0] && number <= interval[1];
@@ -264,6 +322,10 @@
     function nameFromMonthNumber(number){
         months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
         return months[number - 1];
+    }
+    
+    function yearToYearmonth(year){
+        return minYear + ((year) - minYear) * 12
     }
     
     draw();
