@@ -97,6 +97,13 @@ circle.earth {
   display: none;
 }
 
+.pulsating-rings{
+  fill: pink;
+  fill-opacity: 0.1;
+  stroke: pink;
+  stroke-width: 2px;
+  display: none;
+}
 .voronoi {
   fill: transparent;
   stroke-width: 1px;

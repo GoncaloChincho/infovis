@@ -198,6 +198,25 @@
                     .attr("cy", function(d) {
                         return lunar_distance_scale(d.ld * LUNAR_DISTANCE)
                     });
+                asteroids.selectAll("pulsating-rings")
+                    .data(rows)
+                    .enter()
+                    .append("circle")
+                    .attr("class", function(d) {
+                        d.pulseEl = this;
+                        var className = 'pulsating-rings';
+                        return className;
+                    })
+                    .attr("r", function(d) {
+                        return size_scale(getR(d.diam));
+                    })
+                    .attr("cx", function(d) {
+                        return time_scale(d.closeApproachYear + d.month)
+                    })
+                    .attr("cy", function(d) {
+                        return lunar_distance_scale(d.ld * LUNAR_DISTANCE)
+                    });
+            
                 drawVoronoi(rows);
             });
     }
@@ -225,6 +244,7 @@
             .call(redrawPolygon)
             .on("mouseenter", function(d) {
                 d.data['ringEl'].style.display = 'block';
+                
                 //console.log(d);
                 popover.select("#name").text('Asteroid ' + d['data'].name);
                 popover.select("#approach").text('Approach Date: ' + nameFromMonthNumber(d['data'].month) + '-' + d['data'].origYear);
@@ -248,13 +268,14 @@
             })
             .on("mouseout", function(d) {
                 d.data['ringEl'].style.display = 'none';
-                popover["_groups"][0][0].style.display = 'none'
+                popover["_groups"][0][0].style.display = 'none';
             })
             .on("mousedown", function(d){
                 d['data'].selected = !d['data'].selected;
                 if (d['data'].selected) {
                     //var selected_circles = d3.select(d['data']);
-                    pulsate(d3.select(d['data']));
+                    //d.data['pulseEl'].style.display = 'block';
+                    pulsate(d3.select(d.data));
 
                   }
                 
@@ -265,26 +286,26 @@
     recursive_transitions();
         
         function recursive_transitions() {
-            console.log(selection);
-            circle = selection['_groups'][0][0].circleEl;
-            //console.log(circle);
-            selectionCircle = d3.select(circle);
+            pulse = selection['_groups'][0][0].pulseEl;
+            //console.log(selection['_groups'][0][0].circleEl.r['baseVal'].value);
+            selectionPulse = d3.select(pulse);
           if (selection['_groups'][0][0].selected) {
-            selectionCircle.transition()
-                .duration(400)
+            selectionPulse['_groups'][0][0].style.display = 'block';
+            selectionPulse.transition()
+                .duration(500)
                 .attr("stroke-width", 2)
-                .attr("r", 8)
+                .attr("r", 15)
                 .ease(d3.easeSin)
                 .transition()
                 .duration(500)
                 .attr('stroke-width', 3)
-                .attr("r", 6)
+                .attr("r", selection['_groups'][0][0].circleEl.r['baseVal'].value + 2)
                 .ease(d3.easeSin)
                 .on("end", recursive_transitions);
           } else {
             // transition back to normal
-              console.log(getR(selection['_groups'][0][0].diam));
-            selectionCircle.transition()
+              //console.log(getR(selection['_groups'][0][0].diam));
+            selectionPulse.transition()
                 .duration(200)
                 .attr("r", size_scale(getR(selection['_groups'][0][0].diam)))
                 .attr("stroke-width", 2)
