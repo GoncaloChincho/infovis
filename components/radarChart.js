@@ -144,29 +144,29 @@ const initRadarChart = () => {
 }
 
 const compareNodeRadarChart = (node) => {
-	if(node.objectId === 'Earth') return;
-	const firstVal = getScalePosition(DISTANCE_MAX, DISTANCE_MIN, node.distance);
+    console.log(node);
+	const firstVal = getScalePosition(DISTANCE_MAX, DISTANCE_MIN, node.ld);
 	const first = `${0}, ${-firstVal}`;
-	const secondVal = getScalePosition(DIAMETER_MAX, DIAMETER_MIN, node.diameter);	
+	const secondVal = getScalePosition(DIAMETER_MAX, DIAMETER_MIN, node.diam);	
 	const second = `${downXDist(secondVal)}, ${downYDist(secondVal)}`;
 	const thirdVal = getScalePosition(VELOCITY_MAX, VELOCITY_MIN, node.velocity);	
 	const third = `${-downXDist(thirdVal)}, ${downYDist(thirdVal)}`;
-	const fourthVal = getScalePosition(IMPACT_PROBABILITY_MAX, IMPACT_PROBABILITY_MIN, node.impactProbability);	
+	const fourthVal = getScalePosition(IMPACT_PROBABILITY_MAX, IMPACT_PROBABILITY_MIN, node.impactProb);	
 	const fourth = `${sideXDist(fourthVal)}, ${-sideYDist(fourthVal)}`;
-	const fifthVal = getScalePosition(HAZARD_SCALE_MAX, HAZARD_SCALE_MIN, node.hazardScale);	
+	const fifthVal = getScalePosition(HAZARD_SCALE_MAX, HAZARD_SCALE_MIN, node.hazard);	
 	const fifth = `${-sideXDist(fifthVal)}, ${-sideYDist(fifthVal)}`;
 
 	NEWER_POLYGON.transition()
 		.duration(300)
 		.attr('points', `${first} ${fourth} ${second} ${third} ${fifth}`)
-		.attr("fill", getC(node.impactDamage));
+		.attr("fill", getC(node.iDamage));
 	
 	OLDER_POLYGON.transition()
 		.duration(300)
 		.attr('points', POINTS)
 		.attr("fill", COLOR);
 	POINTS = `${first} ${fourth} ${second} ${third} ${fifth}`;
-	COLOR = getC(node.impactDamage);
+	COLOR = getC(node.iDamage);
 	
 	NEWER_NEO_NAME.transition()
 		.text(node.name);
@@ -177,10 +177,8 @@ const compareNodeRadarChart = (node) => {
 }
 
 const compareWithAverageRadarChart = (node) => {
-    console.log(node);
-	if(node.objectId!='Earth'){
 	compareNodeRadarChart(AVERAGE_NEO);
-	compareNodeRadarChart(node);}
+	compareNodeRadarChart(node);
 }
 
 
@@ -201,11 +199,13 @@ d3.json("content/data/example.json", function(error, data) {
 	}
 	AVERAGE_NEO = {
 		name: 'Average NEO',
-		distance: distanceSum/data.length,
-		diameter: diameterSum/data.length,
+		ld: distanceSum/data.length,
+		diam: diameterSum/data.length,
 		velocity: velocitySum/data.length,
-		impactProbability: impactProbabilitySum/data.length,
-		hazardScale: hazardScaleSum/data.length,
+		impactProb: impactProbabilitySum/data.length,
+		hazard: hazardScaleSum/data.length,
 	}
+    
+    console.log(AVERAGE_NEO);
 	initRadarChart();
 });

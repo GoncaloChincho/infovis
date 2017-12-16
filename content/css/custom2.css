@@ -104,6 +104,11 @@ circle.earth {
   stroke-width: 2px;
   display: none;
 }
+
+.on{
+  display: block;
+}
+
 .voronoi {
   fill: transparent;
   stroke-width: 1px;

@@ -4,6 +4,7 @@
     var LUNAR_DISTANCE, MAX_LDS;
     var offsetTop, offsetBottom;
     var minYear, maxYear, yearWindowSize;
+    var selectedNeos = [];
 
    
     function draw() {
@@ -137,13 +138,7 @@
                 var year = minYear + (parseInt(d['Year']) - minYear) * 12;
                 
                 var month = getMonthFromString(d['Month']);
-               // console.log(d['Year']);
-                if (d["Object"] === "" || !inInterval(year, [minYear, maxYear*12 + 12])){
-                    /*console.log(d['Year']);
-                    console.log(minYear)
-                    console.log(maxYear*12 + 12)*/
-                    return;
-                } 
+                if (d["Object"] === "" || !inInterval(year, [minYear, maxYear*12 + 12])) return;
                 
                 return {
                     ld: d["Distance (LD)"],
@@ -156,7 +151,8 @@
                     impactProb: d['Impact Probability'],
                     hazard: d['Hazard Scale'],
                     velocity: d['Velocity (km/s)'],
-                    selected: false
+                    selected: false,
+                    id: d['Id']
                 }
             })
             .get(function(errors, rows) {
@@ -164,6 +160,24 @@
                     return row.ld <= MAX_LDS + 0.5;
                 });
                 var asteroids = ow.append("g").attr("class", "asteroids");
+                asteroids.selectAll("pulsating-rings")
+                    .data(rows)
+                    .enter()
+                    .append("circle")
+                    .attr("class", function(d) {
+                        d.pulseEl = this;
+                        var className = 'pulsating-rings';
+                        return className;
+                    })
+                    .attr("r", function(d) {
+                        return size_scale(getR(d.diam));
+                    })
+                    .attr("cx", function(d) {
+                        return time_scale(d.closeApproachYear + d.month)
+                    })
+                    .attr("cy", function(d) {
+                        return lunar_distance_scale(d.ld * LUNAR_DISTANCE)
+                    });
                 asteroids.selectAll("asteroid")
                     .data(rows)
                     .enter()
@@ -204,24 +218,7 @@
                     .attr("cy", function(d) {
                         return lunar_distance_scale(d.ld * LUNAR_DISTANCE)
                     });
-                asteroids.selectAll("pulsating-rings")
-                    .data(rows)
-                    .enter()
-                    .append("circle")
-                    .attr("class", function(d) {
-                        d.pulseEl = this;
-                        var className = 'pulsating-rings';
-                        return className;
-                    })
-                    .attr("r", function(d) {
-                        return size_scale(getR(d.diam));
-                    })
-                    .attr("cx", function(d) {
-                        return time_scale(d.closeApproachYear + d.month)
-                    })
-                    .attr("cy", function(d) {
-                        return lunar_distance_scale(d.ld * LUNAR_DISTANCE)
-                    });
+                
             
                 drawVoronoi(rows);
             });
@@ -277,28 +274,58 @@
                 popover["_groups"][0][0].style.display = 'none';
             })
             .on("mousedown", function(d){
+                if(selectedNeos.length == 0){
+                    compareWithAverageRadarChart(d['data']);
+                }
+                else{
+                    compareNodeRadarChart(d['data']);
+                }
                 d['data'].selected = !d['data'].selected;
                 if (d['data'].selected) {
+                    if(selectedNeos[1]){
+                        selectedNeos[1].selected = false;
+                        d3.select(selectedNeos[1].pulseEl)
+                        .classed('on',false)
+                        .classed('off',true);
+                    } 
+                    selectedNeos[1] = selectedNeos[0];
+                    selectedNeos[0] = d['data'];
                     //var selected_circles = d3.select(d['data']);
                     //d.data['pulseEl'].style.display = 'block';
-                    pulsate(d3.select(d.data));
-                    compareWithAverageRadarChart(d['data']);
+                    d3.select(d['data'].pulseEl)
+                        .classed('off',false)
+                        .classed('on',true);
 
-                  }
-                
+                }
+                else{
+                    if(selectedNeos[0].id == d['data'].id){
+                        selectedNeos[0] = '';
+                    }
+                    else{
+                        selectedNeos[1] = '';
+                    }
+                    d3.select(d['data'].pulseEl)
+                        .classed('on',false)
+                        .classed('off',true);
+                }
+                //console.log(selectedNeos);
+                pulsate();
+                //console.log(selectedNeos);
             });
     }
     
-    function pulsate(selection) {
+    function pulsate() {
     recursive_transitions();
         
         function recursive_transitions() {
-            pulse = selection['_groups'][0][0].pulseEl;
+            //pulse = selection['_groups'][0][0].pulseEl;
             //console.log(selection['_groups'][0][0].circleEl.r['baseVal'].value);
-            selectionPulse = d3.select(pulse);
-          if (selection['_groups'][0][0].selected) {
-            selectionPulse['_groups'][0][0].style.display = 'block';
-            selectionPulse.transition()
+            selectionPulse = d3.selectAll('.on');
+            //console.log(selectionPulse);
+         // if (selection['_groups'][0][0].selected) {
+            if(selectionPulse){
+                //selectionPulse.style('display','block');
+                selectionPulse.transition()
                 .duration(500)
                 .attr("stroke-width", 2)
                 .attr("r", 15)
@@ -306,19 +333,21 @@
                 .transition()
                 .duration(500)
                 .attr('stroke-width', 3)
-                .attr("r", selection['_groups'][0][0].circleEl.r['baseVal'].value + 2)
+                .attr("r", function(d) {
+                        //console.log(d);
+                        return d.circleEl.r['baseVal'].value + 2})
                 .ease(d3.easeSin)
                 .on("end", recursive_transitions);
-          } else {
-            // transition back to normal
-              //console.log(getR(selection['_groups'][0][0].diam));
+            }
+            
+        /*  } else {
             selectionPulse['_groups'][0][0].style.display = 'none';
             selectionPulse.transition()
                 .duration(200)
                 .attr("r", size_scale(getR(selection['_groups'][0][0].diam)))
                 .attr("stroke-width", 2)
                 .attr("stroke-dasharray", "1, 0");
-          }
+          }*/
         }
     }
     
