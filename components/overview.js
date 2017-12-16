@@ -137,7 +137,13 @@
                 var year = minYear + (parseInt(d['Year']) - minYear) * 12;
                 
                 var month = getMonthFromString(d['Month']);
-                if (d["Object"] === "" || !inInterval(year, [minYear, maxYear*12 + 12])) return;
+               // console.log(d['Year']);
+                if (d["Object"] === "" || !inInterval(year, [minYear, maxYear*12 + 12])){
+                    /*console.log(d['Year']);
+                    console.log(minYear)
+                    console.log(maxYear*12 + 12)*/
+                    return;
+                } 
                 
                 return {
                     ld: d["Distance (LD)"],
@@ -276,6 +282,7 @@
                     //var selected_circles = d3.select(d['data']);
                     //d.data['pulseEl'].style.display = 'block';
                     pulsate(d3.select(d.data));
+                    compareWithAverageRadarChart(d['data']);
 
                   }
                 
@@ -305,6 +312,7 @@
           } else {
             // transition back to normal
               //console.log(getR(selection['_groups'][0][0].diam));
+            selectionPulse['_groups'][0][0].style.display = 'none';
             selectionPulse.transition()
                 .duration(200)
                 .attr("r", size_scale(getR(selection['_groups'][0][0].diam)))

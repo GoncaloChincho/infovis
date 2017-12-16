@@ -177,6 +177,7 @@ const compareNodeRadarChart = (node) => {
 }
 
 const compareWithAverageRadarChart = (node) => {
+    console.log(node);
 	if(node.objectId!='Earth'){
 	compareNodeRadarChart(AVERAGE_NEO);
 	compareNodeRadarChart(node);}
