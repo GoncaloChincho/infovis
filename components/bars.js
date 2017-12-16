@@ -2,11 +2,24 @@ var fulldataset;
 var dataset;
 var x0=0;
 var xn=61;
+var dispatch = d3.dispatch("yearEnter");
+var olderSelectBar;
+var newerSelectBar;
 
 d3.json("content/data/alloccurences.json", function (data){
 	full_dataset = data;
 	dataset=full_dataset.slice(x0,xn);
 	gen_vis();
+})
+
+dispatch.on("yearEnter", function(d){
+	olderSelectBar=newerSelectBar;
+	if(olderSelectBar!=null){
+		olderSelectBar.attr("fill", "#9966a1");
+	}
+	newerSelectBar=d3.select("rect[title=\'"+d.Year+"\']");
+	newerSelectBar.attr("fill", "#4a3d8d");
+	
 })
 
 function gen_vis(){
@@ -53,14 +66,20 @@ function gen_vis(){
 		.enter().append("rect")	
 					.attr("width", bar_w)	
 					.attr("height", function(d)	{return	yscale(d.Occurences);})	
-					.attr("fill","#AAA")
+					.attr("fill","#9966a1")
 					.attr("x",function(d,i){return xscale(i);})
 					.attr("y",30)
+					.attr("title",function(d){return d.Year})
+					.on("mouseover", function(d){dispatch.call("yearEnter", d,d);})
 					.append("title")
-						.text(function(d){return d.Occurences});
+						.text(function(d){
+								if(d.Occurences>1){
+									return d.Year+"\n"+d.Occurences+" NEOs";}
+								return d.Year+"\n"+d.Occurences+" NEO";});
 				
 	svg.append("g")
 		.attr("transform", "translate(0,30)")
+		.attr("class", "y axis")
 		.call(yaxis);
 		
 	svg.append("g")
@@ -125,9 +144,13 @@ function gen_vis(){
 									if(d.Occurences==0)
 										{return 0;}
 									return yscale(d.Occurences);})	
+				.attr("title",function(d){return d.Year})
 				.select("title")
-					.text(function(d){return d.Occurences});
-					
+						.text(function(d){
+								if(d.Occurences>1){
+									return d.Year+"\n"+d.Occurences+" NEOs";}
+								return d.Year+"\n"+d.Occurences+" NEO";});
+								
 			xaxis.scale(d3.scaleLinear()	
 							.domain([dataset[0].Year,dataset[60].Year])	
 							.range([bar_w/2,w-bar_w/2]));

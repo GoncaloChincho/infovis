@@ -145,3 +145,40 @@ circle.earth {
 .danger-3{
     fill:red;
 }
+.x.axis text{
+  fill: #AAA;
+  font-size: 12px;
+  stroke: none;
+  font-family: "source-code-pro", monospace;
+}
+
+.x.axis line{
+  stroke: #AAA;
+}
+
+.x.axis path{
+  stroke: #AAA;
+}
+
+.x2.axis line{
+  stroke: #e5e5e5;
+}
+
+.x2.axis path{
+  stroke: #AAA;
+}
+
+.y.axis text{
+  fill: #AAA;
+  font-size: 12px;
+  stroke: none;
+  font-family: "source-code-pro", monospace;
+}
+
+.y.axis line{
+  stroke: #e5e5e5;
+}
+
+.y.axis path{
+  stroke: #AAA;
+}
