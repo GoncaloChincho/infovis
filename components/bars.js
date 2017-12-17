@@ -36,7 +36,7 @@ function gen_vis(){
 
 	var	xscale = d3.scaleLinear()	
 					.domain([0,61])	
-					.range([0,w]);	
+					.range([0,w]);
 	
 	var yaxis = d3.axisRight()
 					.scale(yscale)
@@ -96,6 +96,22 @@ function gen_vis(){
 		.attr("cy", 15)
 		.attr("r", 15)
 		.attr("fill", "#363333");
+	
+	var line = d3.line()
+				.x(function(d, i) {return xscale(i); })
+				.y(function(d){ 
+					if(d.Occurences==0)
+						{return 30;}
+					return 30+yscale(d.Occurences);}); 
+
+	var path = svg.append("path")
+					.attr("transform","translate("+bar_w/2+",0)")
+					.attr("d", line(dataset))
+					.attr("stroke", "#f0a854")
+					.attr("stroke-width", 2)
+					.attr("fill", "none")
+					.attr("class", "line");
+
 	
 	var left = svg.append("text")
 					  .text("<")
@@ -159,6 +175,8 @@ function gen_vis(){
 							.domain([dataset[0].Year,dataset[60].Year])	
 							.range([bar_w/2,w-bar_w/2]));							
 			
+		
+				
 			d3.select(".x.axis")
 				.transition()
 				.duration(1000)			
@@ -168,5 +186,11 @@ function gen_vis(){
 				.transition()
 				.duration(1000)			
 				.call(xaxis2);
+			
+			path
+				.transition()
+				.duration(1000)
+				.attr("d", line(dataset));
+				
 	}	
 }
