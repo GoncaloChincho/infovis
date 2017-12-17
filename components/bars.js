@@ -207,7 +207,7 @@ function gen_vis(){
                 if(newD){
                    var l = newD.length;
                     for(var i = 0;i < l; i++){
-                        newD[i][1] +=  -50;
+                        newD[i][0] +=  -50;
                     } 
                 }
                //console.log(newD);
