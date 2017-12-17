@@ -299,11 +299,13 @@
                 popover["_groups"][0][0].style.display = 'none';
             })
             .on("mousedown", function(d){
+                var color = getRandomColor();
+                
                 if(selectedNeos.length == 0){
-                    compareWithAverageRadarChart(d['data']);
+                    compareWithAverageRadarChart(d['data'],color);
                 }
                 else{
-                    compareNodeRadarChart(d['data']);
+                    compareNodeRadarChart(d['data'],color);
                 }
                 d['data'].selected = !d['data'].selected;
                 if (d['data'].selected) {
@@ -315,9 +317,12 @@
                     } 
                     selectedNeos[1] = selectedNeos[0];
                     selectedNeos[0] = d['data'];
-                    //var selected_circles = d3.select(d['data']);
-                    //d.data['pulseEl'].style.display = 'block';
                     d3.select(d['data'].pulseEl)
+                        .style('stroke',function(d){
+                        return getC(d.iDamage);
+                        
+                    })
+                               
                         .classed('off',false)
                         .classed('on',true);
 
@@ -474,3 +479,11 @@ function change_overview(direction){
                 return newD ? "M" + newD.join("L") + "Z" : null;
             });*/
     }
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}

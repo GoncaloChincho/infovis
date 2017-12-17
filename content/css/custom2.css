@@ -98,9 +98,7 @@ circle.earth {
 }
 
 .pulsating-rings{
-  fill: pink;
   fill-opacity: 0.1;
-  stroke: pink;
   stroke-width: 2px;
   display: none;
 }
@@ -140,7 +138,7 @@ circle.earth {
   border-radius: 2px;
 }
 
-.danger-yellow{
+.danger-1{
     fill:yellow;
 }
 
