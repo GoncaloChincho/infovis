@@ -35,11 +35,12 @@ const initScatterPlot = (data) => {
     var xAxisCall = d3.axisBottom(x);
 
     var xAxis = node.append("g")
-        .attr("class", "x")
+        .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxisCall.tickSizeOuter(0));
 
     node.append("g")
+        .attr("class", "y axis")    
         .attr("transform", "translate(0,0)")    
         .call(d3.axisLeft(y).tickSizeOuter(0));
 
@@ -47,10 +48,12 @@ const initScatterPlot = (data) => {
 
     node.append("text")
         .attr("transform", "rotate(-90)")
+        // .attr("class", "axisText")
         .attr("y", -40)
         .attr("x",0 - ((height + 40) / 2))
         .attr("dy", "1em")
         .style("text-anchor", "middle")
+        .style("fill", "#AAA")
         .text("Hazard scale");
 
 
