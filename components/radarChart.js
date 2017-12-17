@@ -21,8 +21,8 @@ const VELOCITY_MAX = 38.6;
 const VELOCITY_MIN = 1;
 const IMPACT_PROBABILITY_MAX = 0.96;
 const IMPACT_PROBABILITY_MIN = 9.9e-6;
-const HAZARD_SCALE_MAX = -1.4;
-const HAZARD_SCALE_MIN = -11.4;
+const HAZARD_SCALE_MAX = 11.4;
+const HAZARD_SCALE_MIN = 1.4;
 
 const getC = (impactDamage) => {
 	if(impactDamage === "0") return "#658a3c"; //green
@@ -157,7 +157,7 @@ const compareNodeRadarChart = (node) => {
 	const third = `${-downXDist(thirdVal)}, ${downYDist(thirdVal)}`;
 	const fourthVal = getScalePosition(IMPACT_PROBABILITY_MAX, IMPACT_PROBABILITY_MIN, node.impactProb);	
 	const fourth = `${sideXDist(fourthVal)}, ${-sideYDist(fourthVal)}`;
-	const fifthVal = getScalePosition(HAZARD_SCALE_MAX, HAZARD_SCALE_MIN, node.hazard);	
+	const fifthVal = getScalePosition(HAZARD_SCALE_MAX, HAZARD_SCALE_MIN, 11.4-node.hazard*(-1));	
 	const fifth = `${-sideXDist(fifthVal)}, ${-sideYDist(fifthVal)}`;
 
 	NEWER_POLYGON.transition()
@@ -188,21 +188,27 @@ const compareWithAverageRadarChart = (node) => {
 }
 
 
-d3.json("content/data/example.json", function(error, data) {
+d3.json("content/data/data.json", function(error, data) {
 	if (error) throw error;
 	let distanceSum = 0;
 	let diameterSum = 0;
 	let velocitySum = 0;
 	let impactProbabilitySum = 0;
 	let hazardScaleSum = 0;
-
+	
 	for( var i = 0; i < data.length; i++ ){
-		distanceSum += data[i].distance;
-		diameterSum += data[i].diameter;
-		velocitySum += data[i].velocity;
-		impactProbabilitySum += data[i].impactProbability;
-		hazardScaleSum += data[i].hazardScale;
+
+		distanceSum += data[i].Distance;
+		diameterSum += data[i].Diameter;
+		velocitySum += data[i].Velocity;
+		impactProbabilitySum += Number(data[i].ImpactProbability);
+		hazardScaleSum += data[i].HazardScale;
 	}
+	
+	console.log(velocitySum);
+	console.log(impactProbabilitySum);
+	
+	
 	AVERAGE_NEO = {
 		name: 'Average NEO',
 		ld: distanceSum/data.length,
