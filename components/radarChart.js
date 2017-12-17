@@ -144,7 +144,6 @@ const initRadarChart = () => {
 }
 
 const compareNodeRadarChart = (node) => {
-    console.log(node);
 	const firstVal = getScalePosition(DISTANCE_MAX, DISTANCE_MIN, node.ld);
 	const first = `${0}, ${-firstVal}`;
 	const secondVal = getScalePosition(DIAMETER_MAX, DIAMETER_MIN, node.diam);	
@@ -206,6 +205,5 @@ d3.json("content/data/example.json", function(error, data) {
 		hazard: hazardScaleSum/data.length,
 	}
     
-    console.log(AVERAGE_NEO);
 	initRadarChart();
 });

@@ -103,7 +103,8 @@ function gen_vis(){
 					  .attr("dy", 25)
 					  .attr("font-size", "30px")
 					  .attr("font-weight", "bold")
-					  .attr("fill", "#AAA");
+					  .attr("fill", "#AAA")
+                      .attr('id','left');
 									
 	svg.append("circle")
 		.attr("cx", w-15)
@@ -124,18 +125,21 @@ function gen_vis(){
 							x0 -= 10;
 							xn -= 10;
 							on_click();
+                            
 						}});
 	
 	right.on("click", function(){
 						if(xn!=291){
 							x0 += 10;
 							xn += 10;
-							on_click();
+							on_click(false);
 						}});
 	
-	function on_click(){
+	function on_click(left = true){
+        var goLeft = -1;
+        if(left) goLeft = 1
 		dataset=full_dataset.slice(x0, xn);
-					
+		//console.log(getRows());			
 		svg.selectAll("rect")	
 			.data(dataset)
 				.transition()
@@ -168,5 +172,28 @@ function gen_vis(){
 				.transition()
 				.duration(1000)			
 				.call(xaxis2);
+        
+        d3.selectAll(".asteroid")
+            .transition()
+            .duration(1000)
+            .attr('cx', function(d){
+                  
+                  return d.circleEl.cx.baseVal.value + goLeft *  (166.8);
+                  });
+        d3.selectAll("path")
+            .attr("d", function(d) {
+                console.log(d);
+                var newD = d;
+                if(newD){
+                   var l = newD.length;
+                    for(var i = 0;i < l; i++){
+                        newD[i][1] +=  -50;
+                    } 
+                }
+               //console.log(newD);
+                
+                return newD ? "M" + newD.join("L") + "Z" : null;
+            });
 	}	
 }
+

@@ -3,8 +3,10 @@
     var lunar_distance_scale, time_scale, size_scale, hmag_scale;
     var LUNAR_DISTANCE, MAX_LDS;
     var offsetTop, offsetBottom;
-    var minYear, maxYear, yearWindowSize;
+    var minYear, maxYear, realMin,realMax, yearWindowSize;
     var selectedNeos = [];
+    var left, right;
+    var currRows;
 
    
     function draw() {
@@ -15,15 +17,17 @@
         width = 0.7 * window_width;
         
         LUNAR_DISTANCE = 384400; //km
-        MAX_LDS = 73;
+        MAX_LDS = 80;
         offsetTop = 40;
         offsetBottom = 40;
-        windowSize = 5;
-        shift = 
+        windowSize = 50;
+        realMin = 1900;
+        realMax = 2200;
             
+        
         lunar_distance_scale = d3.scaleLinear()
-            .domain([0, MAX_LDS * LUNAR_DISTANCE])
-            .range([30, height - 50]);
+            .domain([0, MAX_LDS])
+            .range([height - 50, 30 ]);
         
         var date = new Date();
         var time_domain = [d3.timeYear.offset(date, -1 * windowSize), d3.timeYear.offset(date, windowSize)];
@@ -33,21 +37,30 @@
         time_year_scale = d3.scaleLinear()
             .domain([minYear, maxYear])
             .range([0, width]);
-        //console.log(maxYear*12 + 12);
+        
         time_scale = d3.scaleLinear()
+            .domain([realMin + 1, realMin + (realMax - realMin)*12 + 12])
+            .range([0, width * (realMax - realMin)/61]);
+
+        
+        //console.log(maxYear*12 + 12);
+        /*time_scale = d3.scaleLinear()
             .domain([minYear+1, minYear + (maxYear - minYear)*12 + 12])
-            .range([0, width]);
+            .range([0, width]);*/
         
         size_scale = d3.scaleLog()
             .domain([3, 15])
             .range([1, 4]);
-
-        //drawGuideLines("guide-light", 2);
-        //drawGuideLines("guide-light", 1);
+        
+        left = d3.select('#left');
+        right = d3.select('#right');
+        //console.log(document.getElementById('left'));
+        drawGuideLines("guide-light", 2);
         drawRulers();
         drawEarthAndMoon();
         drawNeos();
     }
+    
     
      function yearToYearmonth(year){
         console.log('a');
@@ -62,8 +75,13 @@
         var guides = ow.append("g");
         var left = minYear + ((year - years + 1) - minYear) * 12;
         var right = minYear + ((year + years) - minYear) * 12;
+        var data = []
+        for(i = 0;i <= (realMax - realMin) *16.68 ;i += 16.68){
+            data.push(i);
+        }
+        
         guides.selectAll("guide")
-            .data([time_scale(left), time_scale(right)])
+            .data(data)
             .enter()
             .append("line")
             .attr("x1", function(d) {
@@ -94,7 +112,8 @@
                 return 0;
             })
             .attr("y1", function(d) {
-                return height - lunar_distance_scale(LUNAR_DISTANCE * d);
+               // console.log(lunar_distance_scale(d));
+                return  lunar_distance_scale(d);
             })
             .attr("x2", function(d) {
                 if (d % 10 === 0 || d === 1) {
@@ -105,7 +124,7 @@
                 return 0;
             })
             .attr("y2", function(d) {
-                return height - lunar_distance_scale(LUNAR_DISTANCE * d);
+                return lunar_distance_scale(d);
             });
         rulerGroup.selectAll("ruler-label")
             .data(range.filter(function(d) {
@@ -119,7 +138,7 @@
             .attr("class", "ruler-label")
             .attr("x", width / 2 + 85)
             .attr("y", function(d) {
-                return height - lunar_distance_scale(LUNAR_DISTANCE * d) + 3;
+                return lunar_distance_scale( d) + 3;
             });
     }
 
@@ -135,11 +154,10 @@
     function drawNeos() {
         d3.csv("content/data/data.csv")
             .row(function(d) {
-                var year = minYear + (parseInt(d['Year']) - minYear) * 12;
+                var year = realMin + (parseInt(d['Year']) - realMin) * 12;
                 
                 var month = getMonthFromString(d['Month']);
-                if (d["Object"] === "" || !inInterval(year, [minYear, maxYear*12 + 12])) return;
-                
+                //console.log(d['Year']+ " " + (year  + month) + " " + time_scale(year));
                 return {
                     ld: d["Distance (LD)"],
                     closeApproachYear: year,
@@ -160,24 +178,6 @@
                     return row.ld <= MAX_LDS + 0.5;
                 });
                 var asteroids = ow.append("g").attr("class", "asteroids");
-                asteroids.selectAll("pulsating-rings")
-                    .data(rows)
-                    .enter()
-                    .append("circle")
-                    .attr("class", function(d) {
-                        d.pulseEl = this;
-                        var className = 'pulsating-rings';
-                        return className;
-                    })
-                    .attr("r", function(d) {
-                        return size_scale(getR(d.diam));
-                    })
-                    .attr("cx", function(d) {
-                        return time_scale(d.closeApproachYear + d.month)
-                    })
-                    .attr("cy", function(d) {
-                        return lunar_distance_scale(d.ld * LUNAR_DISTANCE)
-                    });
                 asteroids.selectAll("asteroid")
                     .data(rows)
                     .enter()
@@ -195,13 +195,33 @@
                         return size_scale(getR(d.diam));
                     })
                     .attr("cy", function(d) {
-                        return lunar_distance_scale(d.ld * LUNAR_DISTANCE)
+                        return lunar_distance_scale(d.ld)
                     })
                     .attr("cx", function(d) {/*
                         console.log(d.closeApproachYear);
                         console.log(time_scale(d.closeApproachYear + d.month));*/
                         return time_scale(d.closeApproachYear + d.month);
                     });
+            
+                asteroids.selectAll("pulsating-rings")
+                    .data(rows)
+                    .enter()
+                    .append("circle")
+                    .attr("class", function(d) {
+                        d.pulseEl = this;
+                        var className = 'pulsating-rings';
+                        return className;
+                    })
+                    .attr("r", function(d) {
+                        return size_scale(getR(d.diam));
+                    })
+                    .attr("cx", function(d) {
+                        return time_scale(d.closeApproachYear + d.month)
+                    })
+                    .attr("cy", function(d) {
+                        return lunar_distance_scale(d.ld )
+                    });
+                
                 asteroids.selectAll("asteroid-rings")
                     .data(rows)
                     .enter()
@@ -216,29 +236,32 @@
                         return time_scale(d.closeApproachYear + d.month)
                     })
                     .attr("cy", function(d) {
-                        return lunar_distance_scale(d.ld * LUNAR_DISTANCE)
+                        return lunar_distance_scale(d.ld)
                     });
                 
-            
+                console.log(rows);
                 drawVoronoi(rows);
             });
     }
 
     function drawVoronoi(data) {
         var popover = d3.select("#popover");
-        
+        console.log(data);
         var voronoi = d3.voronoi()
             .x(function(d) {
+                console.log(d);
                 
                 return time_scale(parseInt(d.closeApproachYear) + parseInt(d.month))
             })
             .y(function(d) {
-                return lunar_distance_scale(d.ld * LUNAR_DISTANCE)
+                return lunar_distance_scale(d.ld)
             })
             .extent([
                 [-1, -1],
                 [width + 1, height + 1]
             ]);
+        //console.log(data);
+        console.log(voronoi.polygons(data));
         var polygon = ow.append("g")
             .attr("class", "voronoi")
             .selectAll("path")
@@ -357,8 +380,11 @@
     }
 
     function redrawPolygon(polygon) {
+        //console.log(polygon);
         polygon
+        
             .attr("d", function(d) {
+                //console.log(d);
                 return d ? "M" + d.join("L") + "Z" : null;
             });
     }
@@ -385,6 +411,8 @@
     function yearToYearmonth(year){
         return minYear + ((year) - minYear) * 12
     }
+    
+    
     
     draw();
 })(window)

@@ -112,7 +112,7 @@ circle.earth {
 .voronoi {
   fill: transparent;
   stroke-width: 1px;
-  stroke: none;
+  stroke: black;
 }
 
 .asteroid {
