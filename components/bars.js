@@ -119,7 +119,8 @@ function gen_vis(){
 					  .attr("dy", 25)
 					  .attr("font-size", "30px")
 					  .attr("font-weight", "bold")
-					  .attr("fill", "#AAA");
+					  .attr("fill", "#AAA")
+					  .style("cursor", "pointer");
 									
 	svg.append("circle")
 		.attr("cx", w-15)
@@ -133,7 +134,8 @@ function gen_vis(){
 					  .attr("dy", 25)
 					  .attr("font-size", "30px")
 					  .attr("font-weight", "bold")
-					  .attr("fill", "#AAA");
+					  .attr("fill", "#AAA")
+					  .style("cursor", "pointer");
 					
 	left.on("click", function(){
 						if(x0!=0){
