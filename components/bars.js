@@ -5,6 +5,7 @@ var xn=141;
 var dispatch = d3.dispatch("yearEnter");
 var olderSelectBar;
 var newerSelectBar;
+var direction=0; //left-1 right-2
 
 d3.json("content/data/alloccurences.json", function (data){
 	full_dataset = data;
@@ -141,7 +142,7 @@ function gen_vis(){
 						if(x0!=0){
 							x0 -= 10;
 							xn -= 10;
-							on_click();
+							on_click(1);
                             
 						}});
 	
@@ -149,12 +150,11 @@ function gen_vis(){
 						if(xn!=291){
 							x0 += 10;
 							xn += 10;
-							on_click(false);
+							on_click(2);
 						}});
 	
-	function on_click(left = true){
-        var goLeft = -1;
-        if(left) goLeft = 1
+	function on_click(direction){
+		
 		dataset=full_dataset.slice(x0, xn);
 		//console.log(getRows());			
 		svg.selectAll("rect")	
@@ -191,8 +191,15 @@ function gen_vis(){
 				.transition()
 				.duration(1000)			
 				.call(xaxis2);
+			
+			path
+				.transition()
+				.duration(1000)
+				.attr("d", line(dataset));
 
-        
+			change_overview(direction);
+			
+			/*   
         d3.selectAll(".asteroid")
             .transition()
             .duration(1000)
@@ -213,13 +220,7 @@ function gen_vis(){
                //console.log(newD);
                 
                 return newD ? "M" + newD.join("L") + "Z" : null;
-            });
-
-			
-			path
-				.transition()
-				.duration(1000)
-				.attr("d", line(dataset));
+            });*/
 				
 	}	
 }
