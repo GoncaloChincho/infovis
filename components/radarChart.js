@@ -60,7 +60,7 @@ const initRadarChart = () => {
 
 
 	var node = d3.select("#svgRadar").append("g")
-		 .attr('transform', `translate(${(width/2)}, ${height/2})`)
+		 .attr('transform', `translate(${(width/2)}, ${height/1.8})`);
 
 	node.append("circle")
 	.attr('r', 3)
@@ -136,14 +136,14 @@ const initRadarChart = () => {
 		.attr('stroke-width', 2);
 		
 	OLDER_NEO_NAME = node.append("text")
-		.attr('x',150)
-		.attr('y', 180)
+		.attr('x',-180)
+		.attr('y', -150)
 		.attr('fill', 'grey');
 		
 	NEWER_NEO_NAME = node.append("text")
-		.attr('x',150)
-		.attr('y', 200)
-		.attr('fill', 'black');
+		.attr('x',-180)
+		.attr('y', -170)
+		.attr('fill', '#AAA');
 	
 		compareNodeRadarChart(AVERAGE_NEO);
 }
@@ -174,12 +174,12 @@ const compareNodeRadarChart = (node) => {
 	POINTS = `${first} ${fourth} ${second} ${third} ${fifth}`;
 	COLOR = getC(node.iDamage);
 	
-	/*NEWER_NEO_NAME.transition()
+	NEWER_NEO_NAME.transition()
 		.text(node.name);
 
 	OLDER_NEO_NAME.transition()
 		.text(NEO_NAME);
-	NEO_NAME=node.name;*/
+	NEO_NAME=node.name;
 }
 
 const compareWithAverageRadarChart = (node) => {
