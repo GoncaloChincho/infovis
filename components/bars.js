@@ -31,7 +31,7 @@ function gen_vis(){
     w = 0.7 * window_width;
 	var bar_w =	Math.floor(w/60)-1;	
 	
-	var	yscale = d3.scaleLog()
+	var	yscale = d3.scaleLinear()
 					.domain([0.5,100])	
 					.range([0,h-50]);	
 

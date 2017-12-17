@@ -13,22 +13,22 @@ let NEO_NAME;
 
 let AVERAGE_NEO;
 
-const DISTANCE_MAX = 77.82;
+const DISTANCE_MAX = 77.8;
 const DISTANCE_MIN = 0.04;
-const DIAMETER_MAX = 495;
-const DIAMETER_MIN = 1.65;
+const DIAMETER_MAX = 1650;
+const DIAMETER_MIN = 1.6;
 const VELOCITY_MAX = 38.6;
 const VELOCITY_MIN = 1;
 const IMPACT_PROBABILITY_MAX = 0.96;
-const IMPACT_PROBABILITY_MIN = 1.2e-9;
+const IMPACT_PROBABILITY_MIN = 9.9e-6;
 const HAZARD_SCALE_MAX = -1.4;
 const HAZARD_SCALE_MIN = -11.4;
 
 const getC = (impactDamage) => {
-	if(impactDamage === 0) return "green";
-	if(impactDamage === 1) return "yellow";
-	if(impactDamage === 2) return "orange";
-	if(impactDamage === 3) return "red";
+	if(impactDamage === "0") return "#658a3c"; //green
+	if(impactDamage === "1") return "#ffee49"; //yellow
+	if(impactDamage === "2") return "#f0a854"; //orange
+	//if(impactDamage === "3") return "red";
 	else return "blue";
 }
 
@@ -126,16 +126,14 @@ const initRadarChart = () => {
 	OLDER_POLYGON = node.append("polygon")
 		.attr('id', 'radarChartPolygon1')
 		.attr('fill', 'lime')
-		.attr('stroke', 'grey')
 		.attr('fill-opacity', 0.3)
 		.attr('stroke-width', 1);
 		
 	NEWER_POLYGON = node.append("polygon")
 		.attr('id', 'radarChartPolygon2')
 		.attr('fill', 'orange')
-		.attr('stroke', 'black')
 		.attr('fill-opacity', 0.3)
-		.attr('stroke-width', 1);
+		.attr('stroke-width', 2);
 		
 	OLDER_NEO_NAME = node.append("text")
 		.attr('x',150)
@@ -165,21 +163,23 @@ const compareNodeRadarChart = (node) => {
 	NEWER_POLYGON.transition()
 		.duration(300)
 		.attr('points', `${first} ${fourth} ${second} ${third} ${fifth}`)
-		.attr("fill", getC(node.iDamage));
+		.attr("fill", getC(node.iDamage))
+		.attr('stroke', getC(node.iDamage));
 	
 	OLDER_POLYGON.transition()
 		.duration(300)
 		.attr('points', POINTS)
-		.attr("fill", COLOR);
+		.attr("fill", COLOR)
+		.attr('stroke', COLOR);
 	POINTS = `${first} ${fourth} ${second} ${third} ${fifth}`;
 	COLOR = getC(node.iDamage);
 	
-	NEWER_NEO_NAME.transition()
+	/*NEWER_NEO_NAME.transition()
 		.text(node.name);
 
 	OLDER_NEO_NAME.transition()
 		.text(NEO_NAME);
-	NEO_NAME=node.name;
+	NEO_NAME=node.name;*/
 }
 
 const compareWithAverageRadarChart = (node) => {
