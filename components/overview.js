@@ -322,6 +322,7 @@
                         return getC(d.iDamage);
                         
                     })
+                        
                                
                         .classed('off',false)
                         .classed('on',true);
@@ -355,7 +356,11 @@
          // if (selection['_groups'][0][0].selected) {
             if(selectionPulse){
                 //selectionPulse.style('display','block');
-                selectionPulse.transition()
+                selectionPulse
+                    .style('stroke-width',function(d){
+                            if(selectedNeos[0].id == d.id) return 2;
+                            else return 1;
+                    }).transition()
                 .duration(500)
                 .attr("stroke-width", 2)
                 .attr("r", 15)
