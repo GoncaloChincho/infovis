@@ -112,10 +112,16 @@ circle.earth {
 .voronoi {
   fill: transparent;
   stroke-width: 1px;
-  stroke: black;
+  stroke: none;
 }
 
 .asteroid {
+  fill: #CCC;
+  /*stroke: #CCC;
+  stroke-width: 1px;*/
+}
+
+.asteroidO{
   fill: #CCC;
   /*stroke: #CCC;
   stroke-width: 1px;*/

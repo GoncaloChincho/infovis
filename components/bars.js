@@ -199,28 +199,6 @@ function gen_vis(){
 
 			change_overview(direction);
 			
-			/*   
-        d3.selectAll(".asteroid")
-            .transition()
-            .duration(1000)
-            .attr('cx', function(d){
-                  
-                  return d.circleEl.cx.baseVal.value + goLeft *  (166.8);
-                  });
-        d3.selectAll("path")
-            .attr("d", function(d) {
-                console.log(d);
-                var newD = d;
-                if(newD){
-                   var l = newD.length;
-                    for(var i = 0;i < l; i++){
-                        newD[i][0] +=  -50;
-                    } 
-                }
-               //console.log(newD);
-                
-                return newD ? "M" + newD.join("L") + "Z" : null;
-            });*/
 				
 	}	
 }

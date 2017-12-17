@@ -1,4 +1,4 @@
-(function(root) {
+
     var ow, height, width;
     var lunar_distance_scale, time_scale, size_scale, hmag_scale;
     var LUNAR_DISTANCE, MAX_LDS;
@@ -6,10 +6,11 @@
     var minYear, maxYear, realMin,realMax, yearWindowSize;
     var selectedNeos = [];
     var left, right;
-    var currRows;
+    var currRows,offset;
 
    
     function draw() {
+        offset = 0;
         ow = d3.select("#svgOverview");
         var window_height = window.innerHeight;
         var window_width = window.innerWidth;
@@ -55,7 +56,7 @@
         left = d3.select('#left');
         right = d3.select('#right');
         //console.log(document.getElementById('left'));
-        drawGuideLines("guide-light", 2);
+        //drawGuideLines("guide-light", 2);
         drawRulers();
         drawEarthAndMoon();
         drawNeos();
@@ -177,14 +178,14 @@
                 rows = rows.filter(function(row) {
                     return row.ld <= MAX_LDS + 0.5;
                 });
-                var asteroids = ow.append("g").attr("class", "asteroids");
-                asteroids.selectAll("asteroid")
+                var asteroids = ow.append("g").attr("class", "asteroidsO");
+                asteroids.selectAll("asteroidO")
                     .data(rows)
                     .enter()
                     .append("circle")
                     .attr("class", function(d) {
                         d.circleEl = this;
-                        var className = "asteroid"
+                        var className = "asteroidO"
                         if(d.iDamage != 0){
                             className += " danger-" + parseInt(d.iDamage);
                         }
@@ -200,7 +201,7 @@
                     .attr("cx", function(d) {/*
                         console.log(d.closeApproachYear);
                         console.log(time_scale(d.closeApproachYear + d.month));*/
-                        return time_scale(d.closeApproachYear + d.month);
+                        return time_scale(d.closeApproachYear + d.month - (80 + offset)*12);
                     });
             
                 asteroids.selectAll("pulsating-rings")
@@ -216,7 +217,7 @@
                         return size_scale(getR(d.diam));
                     })
                     .attr("cx", function(d) {
-                        return time_scale(d.closeApproachYear + d.month)
+                        return time_scale(d.closeApproachYear + d.month - (80 + offset)*12)
                     })
                     .attr("cy", function(d) {
                         return lunar_distance_scale(d.ld )
@@ -233,35 +234,35 @@
                     })
                     .attr("r", 20)
                     .attr("cx", function(d) {
-                        return time_scale(d.closeApproachYear + d.month)
+                        return time_scale(d.closeApproachYear + d.month- (80 + offset)*12)
                     })
                     .attr("cy", function(d) {
                         return lunar_distance_scale(d.ld)
                     });
-                
-                console.log(rows);
-                drawVoronoi(rows);
+                currRows = rows;
+                drawVoronoi(rows,offset);
             });
     }
 
     function drawVoronoi(data) {
+        console.log(offset);
         var popover = d3.select("#popover");
-        console.log(data);
+       // console.log(data);
         var voronoi = d3.voronoi()
             .x(function(d) {
                // console.log(d);
                 
-                return time_scale(parseInt(d.closeApproachYear) + parseInt(d.month))
+                return time_scale(parseInt(d.closeApproachYear) + parseInt(d.month) - (80 + offset)*12);
             })
             .y(function(d) {
                 return lunar_distance_scale(d.ld)
             })
             .extent([
                 [-1, -1],
-                [width + 1, height + 1]
+                [width * (realMax - realMin)/61, height + 1]
             ]);
         //console.log(data);
-        console.log(voronoi.polygons(data));
+       // console.log(voronoi.polygons(data));
         var polygon = ow.append("g")
             .attr("class", "voronoi")
             .selectAll("path")
@@ -415,4 +416,42 @@
     
     
     draw();
-})(window)
+
+function change_overview(direction){
+        
+        var goLeft;
+        if(direction == 1){
+            goLeft = -1;
+        }
+        else{
+            goLeft = 1;
+        
+        }/*
+        d3.selectAll(".asteroidO")
+            .transition()
+            .duration(1000)
+            .attr('cx', function(d){
+                    //console.log(d);
+                  //console.log(d.circleEl);
+                  return d.circleEl.cx.baseVal.value + goLeft *  (166.8);
+        });*/
+        d3.select('.voronoi').remove();
+        d3.select('.asteroidsO').remove();
+        console.log(direction);
+        offset +=  goLeft * 10
+        drawNeos();
+        /*d3.selectAll("path")
+            .attr("d", function(d) {
+                console.log(d);
+                var newD = d;
+                if(newD){
+                   var l = newD.length;
+                    for(var i = 0;i < l; i++){
+                        newD[i][0] +=  -50;
+                    } 
+                }
+               //console.log(newD);
+                
+                return newD ? "M" + newD.join("L") + "Z" : null;
+            });*/
+    }
