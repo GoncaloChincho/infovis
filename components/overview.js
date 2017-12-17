@@ -249,7 +249,7 @@
         console.log(data);
         var voronoi = d3.voronoi()
             .x(function(d) {
-                console.log(d);
+               // console.log(d);
                 
                 return time_scale(parseInt(d.closeApproachYear) + parseInt(d.month))
             })

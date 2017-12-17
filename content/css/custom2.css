@@ -182,3 +182,18 @@ circle.earth {
 .y.axis path{
   stroke: #AAA;
 }
+
+#svgScatter .button{
+  fill:rgb(153, 102, 161);
+}
+
+#svgScatter .button:not(.selected):hover{
+  fill-opacity: 0.7;
+}
+#svgScatter .button > text{
+  cursor: default;
+}
+
+#svgScatter .button.selected {
+  fill: rgb(74, 61, 141);;
+}

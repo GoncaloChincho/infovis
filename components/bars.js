@@ -1,7 +1,7 @@
 var fulldataset;
 var dataset;
-var x0=0;
-var xn=61;
+var x0=80;
+var xn=141;
 var dispatch = d3.dispatch("yearEnter");
 var olderSelectBar;
 var newerSelectBar;
@@ -36,7 +36,7 @@ function gen_vis(){
 
 	var	xscale = d3.scaleLinear()	
 					.domain([0,61])	
-					.range([0,w]);	
+					.range([0,w]);
 	
 	var yaxis = d3.axisRight()
 					.scale(yscale)
@@ -97,6 +97,22 @@ function gen_vis(){
 		.attr("r", 15)
 		.attr("fill", "#363333");
 	
+	var line = d3.line()
+				.x(function(d, i) {return xscale(i); })
+				.y(function(d){ 
+					if(d.Occurences==0)
+						{return 30;}
+					return 30+yscale(d.Occurences);}); 
+
+	var path = svg.append("path")
+					.attr("transform","translate("+bar_w/2+",0)")
+					.attr("d", line(dataset))
+					.attr("stroke", "#f0a854")
+					.attr("stroke-width", 2)
+					.attr("fill", "none")
+					.attr("class", "line");
+
+	
 	var left = svg.append("text")
 					  .text("<")
 					  .attr("dx",5)
@@ -104,7 +120,7 @@ function gen_vis(){
 					  .attr("font-size", "30px")
 					  .attr("font-weight", "bold")
 					  .attr("fill", "#AAA")
-                      .attr('id','left');
+					  .style("cursor", "pointer");
 									
 	svg.append("circle")
 		.attr("cx", w-15)
@@ -118,7 +134,8 @@ function gen_vis(){
 					  .attr("dy", 25)
 					  .attr("font-size", "30px")
 					  .attr("font-weight", "bold")
-					  .attr("fill", "#AAA");
+					  .attr("fill", "#AAA")
+					  .style("cursor", "pointer");
 					
 	left.on("click", function(){
 						if(x0!=0){
@@ -163,6 +180,8 @@ function gen_vis(){
 							.domain([dataset[0].Year,dataset[60].Year])	
 							.range([bar_w/2,w-bar_w/2]));							
 			
+		
+				
 			d3.select(".x.axis")
 				.transition()
 				.duration(1000)			
@@ -172,6 +191,7 @@ function gen_vis(){
 				.transition()
 				.duration(1000)			
 				.call(xaxis2);
+
         
         d3.selectAll(".asteroid")
             .transition()
@@ -194,6 +214,13 @@ function gen_vis(){
                 
                 return newD ? "M" + newD.join("L") + "Z" : null;
             });
+
+			
+			path
+				.transition()
+				.duration(1000)
+				.attr("d", line(dataset));
+				
 	}	
 }
 
