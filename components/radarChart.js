@@ -35,8 +35,15 @@ const getC = (impactDamage) => {
 const initLine = (node) => node.append("line")
 	.attr('x1', 0)
 	.attr('y1', 0)
-	.attr('stroke', 'black')
+	.attr('stroke', '#AAA')
 	.attr('stroke-width', 'black');	
+
+const initText = (node) => node.append("text")
+	.attr('x', 0)
+	.attr('y', 0)
+	.text("")
+	.attr("fill","#AAA");
+
 const toRadians = (angle) => angle * (Math.PI / 180);
 const downXDist = (armLength) => armLength * Math.sin(toRadians(36));
 const downYDist = (armLength) => Math.sqrt(Math.pow(armLength, 2) - Math.pow(downXDist(armLength), 2))
@@ -59,13 +66,13 @@ const initRadarChart = () => {
 	.attr('r', 3)
 	.attr('cx', 0)
 	.attr('cy', 0)
-	.attr('fill', 'black');
+	.attr('fill', '#AAA');
 	
 	initLine(node)
 	.attr('x2', 0)
 	.attr('y2', -ARM_LENGTH);
 
-    node.append("text")
+    initText(node)
 	.attr('x', -27)
 	.attr('y', -ARM_LENGTH-10)
 	.text("Distance");
@@ -74,7 +81,7 @@ const initRadarChart = () => {
 	.attr('x2', downXDist(ARM_LENGTH))
 	.attr('y2', downYDist(ARM_LENGTH));
 	
-	node.append("text")
+	initText(node)
 	.attr('x', downXDist(ARM_LENGTH)-25)
 	.attr('y', downYDist(ARM_LENGTH)+20)
 	.text("Diameter");
@@ -83,7 +90,7 @@ const initRadarChart = () => {
 	.attr('x2', -downXDist(ARM_LENGTH))
 	.attr('y2', downYDist(ARM_LENGTH));
 	
-	node.append("text")
+	initText(node)
 	.attr('x', -downXDist(ARM_LENGTH)-25)
 	.attr('y', downYDist(ARM_LENGTH)+20)
 	.text("Velocity");
@@ -92,12 +99,12 @@ const initRadarChart = () => {
 	.attr('x2', sideXDist(ARM_LENGTH))
 	.attr('y2', -sideYDist(ARM_LENGTH));
 	
-	node.append("text")
+	initText(node)
 	.attr('x', sideXDist(ARM_LENGTH)+20)
 	.attr('y', -sideYDist(ARM_LENGTH)-5)
 	.text("Impact");
 
-	node.append("text")
+	initText(node)
 	.attr('x', sideXDist(ARM_LENGTH)+10)
 	.attr('y', -sideYDist(ARM_LENGTH)+10)
 	.text("Probability");
@@ -106,12 +113,12 @@ const initRadarChart = () => {
 	.attr('x2', -sideXDist(ARM_LENGTH))
 	.attr('y2', -sideYDist(ARM_LENGTH));
 	
-	node.append("text")
+	initText(node)
 	.attr('x', -sideXDist(ARM_LENGTH)-55)
 	.attr('y', -sideYDist(ARM_LENGTH)-5)
 	.text("Hazard");
 	
-	node.append("text")
+	initText(node)
 	.attr('x', -sideXDist(ARM_LENGTH)-50)
 	.attr('y', -sideYDist(ARM_LENGTH)+10)
 	.text("Scale");
