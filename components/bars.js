@@ -1,7 +1,7 @@
 var fulldataset;
 var dataset;
-var x0=0;
-var xn=61;
+var x0=80;
+var xn=141;
 var dispatch = d3.dispatch("yearEnter");
 var olderSelectBar;
 var newerSelectBar;
