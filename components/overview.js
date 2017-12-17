@@ -6,11 +6,12 @@
     var minYear, maxYear, realMin,realMax, yearWindowSize;
     var selectedNeos = [];
     var left, right;
-    var currRows,offset;
+    var currRows,offset,offsetu;
 
    
     function draw() {
         offset = 0;
+        offsetu = 0;
         ow = d3.select("#svgOverview");
         var window_height = window.innerHeight;
         var window_width = window.innerWidth;
@@ -421,25 +422,43 @@ function change_overview(direction){
         
         var goLeft;
         if(direction == 1){
-            goLeft = -1;
+            goLeft = 1;
         }
         else{
-            goLeft = 1;
+            goLeft = -1;
         
-        }/*
+        }
+    
+        offsetu += goLeft;
+        console.log(offsetu);
         d3.selectAll(".asteroidO")
             .transition()
             .duration(1000)
             .attr('cx', function(d){
                     //console.log(d);
                   //console.log(d.circleEl);
-                  return d.circleEl.cx.baseVal.value + goLeft *  (166.8);
-        });*/
+                  return time_scale(d.closeApproachYear + d.month - (80 - offsetu*10)*12);
+        });
+        d3.selectAll(".asteroid-rings")
+        .attr('cx', function(d){
+            //console.log(d);
+              //console.log(d.circleEl);
+              return time_scale(d.closeApproachYear + d.month - (80 - offsetu*10)*12);
+         });
+    
+    d3.selectAll(".pulsating-rings")
+        .attr('cx', function(d){
+            //console.log(d);
+              //console.log(d.circleEl);
+              return time_scale(d.closeApproachYear + d.month - (80 - offsetu*10)*12);
+         });
+    
+    
         d3.select('.voronoi').remove();
-        d3.select('.asteroidsO').remove();
-        console.log(direction);
-        offset +=  goLeft * 10
-        drawNeos();
+        //d3.select('.asteroidsO').remove();
+        //console.log(direction);
+        offset -=  goLeft * 10
+        drawVoronoi(currRows);
         /*d3.selectAll("path")
             .attr("d", function(d) {
                 console.log(d);
