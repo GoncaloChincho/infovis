@@ -29,7 +29,7 @@ const getC = (impactDamage) => {
 	if(impactDamage === "1") return "#ffee49"; //yellow
 	if(impactDamage === "2") return "#f0a854"; //orange
 	//if(impactDamage === "3") return "red";
-	else return "blue";
+	else return "#1e5bc3";
 }
 
 const initLine = (node) => node.append("line")
@@ -204,9 +204,6 @@ d3.json("content/data/data.json", function(error, data) {
 		impactProbabilitySum += Number(data[i].ImpactProbability);
 		hazardScaleSum += data[i].HazardScale;
 	}
-	
-	console.log(velocitySum);
-	console.log(impactProbabilitySum);
 	
 	
 	AVERAGE_NEO = {

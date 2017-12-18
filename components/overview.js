@@ -7,7 +7,8 @@
     var selectedNeos = [];
     var left, right;
     var currRows,offset,offsetu;
-
+	var oldNEO;
+	var newNEO;
    
     function draw() {
         offset = 0;
@@ -300,7 +301,12 @@
             })
             .on("mousedown", function(d){
                 var color = getRandomColor();
-                
+                var newNEO = d['data'].id;
+				//console.log(newNEO);
+				//console.log(oldNEO);
+				if(oldNEO==newNEO){
+					compareNodeRadarChart(AVERAGE_NEO);
+				}
                 if(selectedNeos.length == 0){
                     compareWithAverageRadarChart(d['data'],color);
                 }
@@ -342,6 +348,7 @@
                 //console.log(selectedNeos);
                 pulsate();
                 //console.log(selectedNeos);
+				oldNEO=newNEO;
             });
     }
     

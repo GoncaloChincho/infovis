@@ -108,7 +108,7 @@ function gen_vis(){
 	var path = svg.append("path")
 					.attr("transform","translate("+bar_w/2+",0)")
 					.attr("d", line(dataset))
-					.attr("stroke", "#f0a854")
+					.attr("stroke", "#AAA")
 					.attr("stroke-width", 2)
 					.attr("fill", "none")
 					.attr("class", "line");
