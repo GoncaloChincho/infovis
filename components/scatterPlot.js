@@ -20,19 +20,23 @@ const initScatterPlot = (data) => {
     var y = d3.scaleLinear().range([height, 50]);
     var x = d3.scaleLinear()
     x.range([0, width-50]);
+	
+	var xlog = d3.scaleLog()
+    xlog.range([0.00000001, width-50]);
 
-    x.domain([0, d3.max(data, function(d) { return d.velocity; })]);
-    y.domain([0, d3.min(data, function(d) { return d.hazardScale; })]);
+    x.domain([0, d3.max(data, function(d) { return d.Velocity; })]);
+    y.domain([0, d3.min(data, function(d) { return d.HazardScale; })]);
     
     var dots = node.selectAll("dot")
         .data(data)
         .enter().append("circle")
             .attr("class", "asteroid")        
-            .attr("r", 3.5)
-            .attr("cx", function(d) { return x(d.velocity); })
-            .attr("cy", function(d) { return y(d.hazardScale); });
+            .attr("r", 1)
+            .attr("cx", function(d) { return x(d.Velocity); })
+            .attr("cy", function(d) { return y(d.HazardScale); });
 
     var xAxisCall = d3.axisBottom(x);
+var xAxisCalllog = d3.axisBottom(xlog);
 
     var xAxis = node.append("g")
         .attr("class", "x axis")
@@ -58,10 +62,10 @@ const initScatterPlot = (data) => {
 
 
     const buttonsInfo = [
-        {id: 'velocity', text: 'Velocity', start: 0, width: 60},
-        {id: 'distance', text: 'Distance', start: 70, width: 65},
-        {id: 'diameter', text: 'Diameter', start: 145, width: 70},
-        {id: 'impactDamage', text: 'Impact probability', start: 225, width: 125},
+        {id: 'Velocity', text: 'Velocity', start: 0, width: 60},
+        {id: 'Distance', text: 'Distance', start: 70, width: 65},
+        {id: 'Diameter', text: 'Diameter', start: 145, width: 70},
+        {id: 'ImpactProbability', text: 'Impact Probability', start: 225, width: 125},
     ]
 
     var buttonsEl = node.selectAll("g button").data(buttonsInfo);
@@ -72,12 +76,26 @@ const initScatterPlot = (data) => {
         .attr("transform", (d) => `translate(${d.start-15}, ${height + 20})`)
         .on('click', function(d){
                 selectButton(d.id);
-
-                x.domain([0, d3.max(data, function(e) { return e[d.id]; })]);
+			
+				if(d.id=="Velocity" || d.id=="Distance"){
+                x.domain([0, d3.max(data, function(e) { return Number(e[d.id]); })]);
                 xAxisCall.scale(x);
                 xAxis.transition().call(xAxisCall).duration(250);
 
-                dots.transition().attr("cx", function(e) { return x(e[d.id]); }).duration(200);
+                dots.transition().attr("cx", function(e) { return Number(x(e[d.id])); }).duration(200);}
+			
+				else{
+					if (d.id=="Diameter"){
+											xlog.domain([1, d3.max(data, function(e) { return Number(e[d.id]); })]);
+
+					}else{
+					xlog.domain([0.000000001, d3.max(data, function(e) { return Number(e[d.id]); })]);}
+					xAxisCalllog.scale(xlog);
+					xAxis.transition().call(xAxisCalllog).duration(250);
+
+					dots.transition().attr("cx", function(e) { return Number(xlog(e[d.id])); }).duration(200);
+					
+				}
                 
         });
 
@@ -95,10 +113,10 @@ const initScatterPlot = (data) => {
         .attr('fill', 'black')
         .text((d) => d.text);
 
-    selectButton('velocity');
+    selectButton('Velocity');
 }
 
-d3.json("content/data/example.json", function(error, data) {
+d3.json("content/data/data.json", function(error, data) {
 	if (error) throw error;
 
 	initScatterPlot(data);

@@ -304,16 +304,24 @@
                 var newNEO = d['data'].id;
 				//console.log(newNEO);
 				//console.log(oldNEO);
-				if(oldNEO==newNEO){
-					compareNodeRadarChart(AVERAGE_NEO);
-				}
+				
                 if(selectedNeos.length == 0){
                     compareWithAverageRadarChart(d['data'],color);
                 }
                 else{
+					if(oldNEO==newNEO){
+					compareNodeRadarChart(AVERAGE_NEO);
+				}
                     compareNodeRadarChart(d['data'],color);
                 }
-                d['data'].selected = !d['data'].selected;
+				
+				d['data'].selected = !d['data'].selected;
+				
+				if(oldNEO==newNEO){
+					d['data'].selected = !d['data'].selected;
+				}
+                
+				
                 if (d['data'].selected) {
                     if(selectedNeos[1]){
                         selectedNeos[1].selected = false;
