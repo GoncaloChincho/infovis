@@ -7,9 +7,9 @@ html,body {
 
 .svgArea{
     box-sizing: border-box;
-    border-style:dashed;
+    border-style:solid;
     border-width: 1px;
-    border-color:hotpink;
+    border-color:#494949;
 }
 #svgOverview{
     /*background:yellow;*/
@@ -70,7 +70,7 @@ text.ruler-label {
 circle.earth {
   fill: #1e5bc3;
   stroke:white;
-  stroke-width: 1px;
+  stroke-width: 0px;
 }
 
 .onlight,
